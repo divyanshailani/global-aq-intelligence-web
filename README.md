@@ -1,5 +1,6 @@
 # Global AQ Intelligence — Frontend
 
+![Dashboard Screenshot](./public/images/ui_dashboard.png)
 > Next.js frontend for the Global AQ Intelligence platform. Renders 30-day PM2.5 forecasts for India, USA, UK, and Australia with confidence zones, EPA AQI coloring, and weather context.
 
 **Live:** [global-aq-intelligence.vercel.app](https://global-aq-intelligence.vercel.app)
