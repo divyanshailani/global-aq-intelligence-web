@@ -96,7 +96,7 @@ export default function Home() {
   return (
     <main className="flex-1">
       {/* Hero */}
-      <Hero />
+      <Hero lastPipelineRun={accuracy.last_pipeline_run || accuracy.generated_at} />
 
       {/* Country Forecasts */}
       <section id="forecasts" className="pt-10 pb-20 px-4 sm:px-6 lg:px-8">

@@ -2,12 +2,57 @@
 
 import React from "react";
 
-export default function Hero() {
+export default function Hero({ lastPipelineRun }: { lastPipelineRun?: string }) {
+  let isStale = false;
+  let daysOld = 0;
+  let formattedDate = "";
+
+  if (lastPipelineRun) {
+    const runDate = new Date(lastPipelineRun);
+    formattedDate = runDate.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+    });
+    const diffMs = Date.now() - runDate.getTime();
+    const diffHours = diffMs / (1000 * 60 * 60);
+    if (diffHours > 24) {
+      isStale = true;
+      daysOld = Math.floor(diffHours / 24);
+    }
+  }
+
   return (
     <section className="relative pt-24 sm:pt-32 pb-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto text-center relative z-10">
         {/* Label pill */}
         <div className="inline-flex flex-col items-center gap-3 mb-8 animate-fade-in-up opacity-0">
+          {lastPipelineRun && (
+            <div
+              className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full ${
+                isStale
+                  ? "bg-amber-500/10 border border-amber-500/20"
+                  : "bg-teal-500/10 border border-teal-500/20"
+              }`}
+            >
+              <span
+                className={`w-1.5 h-1.5 rounded-full ${
+                  isStale ? "bg-amber-400" : "bg-teal-400 hero-pulse"
+                }`}
+              />
+              <span
+                className={`text-xs font-medium tracking-[0.15em] uppercase ${
+                  isStale ? "text-amber-400" : "text-teal-400"
+                }`}
+              >
+                {isStale
+                  ? `Forecast Generated: ${formattedDate} (Data is ${daysOld} days old)`
+                  : `Forecast Generated: ${formattedDate}`}
+              </span>
+            </div>
+          )}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full"
             style={{ background: 'rgba(79,184,176,0.08)', border: '1px solid rgba(79,184,176,0.15)' }}
           >

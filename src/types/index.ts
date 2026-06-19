@@ -70,6 +70,7 @@ export interface TrainingMetric {
 
 export interface AccuracyJSON {
   generated_at: string;
+  last_pipeline_run?: string;
   mae: number | null;
   r2: number | null;
   source: string;
