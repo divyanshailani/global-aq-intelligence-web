@@ -7,7 +7,7 @@ export interface CountryMeta {
   tag: string;
   tag_color: string;
   reason: string;
-  test_r2: number;
+  accuracy_percentage?: number;
   test_mae: number;
   station_count?: number;
   last_data_date?: string;
@@ -21,7 +21,7 @@ export interface ModelMetaJSON {
   countries: Record<string, CountryMeta>;
   accuracy: {
     mae: number | null;
-    r2: number | null;
+    accuracy_percentage?: number | null;
     source: string;
     sample_count: number;
     live_validation_count: number;
@@ -54,7 +54,7 @@ export interface PredictionJSON {
     tag: string;
     tag_color: string;
     reason: string;
-    test_r2: number;
+    accuracy_percentage?: number;
     test_mae: number;
   };
   generated_at: string;
@@ -64,7 +64,7 @@ export interface PredictionJSON {
 }
 
 export interface TrainingMetric {
-  r2: number;
+  accuracy_percentage: number;
   mae: number;
 }
 
@@ -72,7 +72,7 @@ export interface AccuracyJSON {
   generated_at: string;
   last_pipeline_run?: string;
   mae: number | null;
-  r2: number | null;
+  accuracy_percentage: number | null;
   source: string;
   sample_count: number;
   live_validation_count: number;

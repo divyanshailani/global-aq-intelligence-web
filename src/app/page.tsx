@@ -110,7 +110,7 @@ export default function Home() {
               Country Forecasts
             </h2>
             <p className="mt-3 text-slate-400 max-w-xl mx-auto text-sm leading-relaxed">
-              Click any country card to expand its 30-day PM2.5 forecast with
+              Click any country card to expand its up to 30-day PM2.5 forecast with
               confidence bands and zone breakdowns.
             </p>
           </div>

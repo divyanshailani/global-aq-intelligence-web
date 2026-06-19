@@ -12,7 +12,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Global AQ Intelligence — AI-Powered Air Quality Forecasting",
   description:
-    "Real-time 30-day PM2.5 forecasts powered by machine learning. Covering India, United States, United Kingdom, and Australia with confidence-graded predictions.",
+    "Real-time up to 30-day PM2.5 forecasts powered by machine learning. Covering India, United States, United Kingdom, and Australia with confidence-graded predictions.",
   keywords: [
     "air quality",
     "PM2.5",

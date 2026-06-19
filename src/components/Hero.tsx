@@ -87,7 +87,7 @@ export default function Hero({ lastPipelineRun }: { lastPipelineRun?: string }) 
         <p className="text-base sm:text-lg leading-relaxed max-w-2xl mx-auto mb-12 animate-fade-in-up opacity-0 stagger-2"
           style={{ color: 'var(--text-secondary)' }}
         >
-          30-day PM2.5 forecasts for 4 countries, powered by weather-aware gradient-boosted models
+          Up to 30-day PM2.5 forecasts for 4 countries, powered by weather-aware gradient-boosted models
           trained on <span style={{ color: '#d4a24c' }}>1.6M+</span> daily observations from government reference stations.
         </p>
 
@@ -97,7 +97,7 @@ export default function Hero({ lastPipelineRun }: { lastPipelineRun?: string }) 
             { value: "4", label: "Countries", color: "#4fb8b0" },
             { value: "200+", label: "Stations", color: "#6b8ec8" },
             { value: "1.6M", label: "Data Points", color: "#d4a24c" },
-            { value: "30d", label: "Forecast", color: "#8b7eb8" },
+            { value: "30d", label: "Max Forecast", color: "#8b7eb8" },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <p className="text-2xl sm:text-3xl font-bold" style={{ color: stat.color }}>

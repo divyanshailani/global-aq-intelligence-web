@@ -142,7 +142,7 @@ export default function CountryCard({
               </div>
             </div>
             
-            {/* Elevated Raw Physics & R² */}
+            {/* Elevated Raw Physics & Accuracy */}
             <div className="text-right flex flex-col items-end">
               <div className="bg-white/5 border border-white/10 rounded-full px-2.5 py-1 flex items-center gap-1.5 mb-2 shadow-sm">
                 <span className="text-[9px] font-medium text-slate-400 uppercase tracking-wider">Raw Mass</span>
@@ -151,7 +151,14 @@ export default function CountryCard({
                   <span className="text-[9px] text-slate-500">µg/m³</span>
                 </div>
               </div>
-              <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>R² = {meta.test_r2.toFixed(2)}</p>
+              {meta.accuracy_percentage !== undefined && (
+                <p className={`text-[10px] font-bold tracking-wide ${
+                  meta.accuracy_percentage >= 80 ? 'text-emerald-400' :
+                  meta.accuracy_percentage >= 60 ? 'text-amber-400' : 'text-rose-500'
+                }`}>
+                  ACCURACY: {meta.accuracy_percentage.toFixed(1)}%
+                </p>
+              )}
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -197,7 +204,7 @@ export default function CountryCard({
               </span>
             )}
             <span className="text-[11px] font-semibold uppercase tracking-[0.12em]">
-              {isSelected ? 'Collapse forecast' : 'View 30-day forecast'}
+              {isSelected ? 'Collapse forecast' : 'View up to 30-day forecast'}
             </span>
             <svg
               className={`w-3 h-3 transition-transform duration-300 ${isSelected ? 'rotate-180' : ''}`}

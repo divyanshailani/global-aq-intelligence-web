@@ -30,7 +30,7 @@ function CustomBarTooltip({
   payload,
 }: {
   active?: boolean;
-  payload?: Array<{ payload: { country: string; name: string; r2: number; mae: number } }>;
+  payload?: Array<{ payload: { country: string; name: string; accuracy_percentage: number; mae: number } }>;
   label?: string;
 }) {
   if (!active || !payload || !payload.length) return null;
@@ -40,8 +40,8 @@ function CustomBarTooltip({
       <p className="text-slate-300 font-semibold mb-1.5">{d.name}</p>
       <div className="space-y-1">
         <div className="flex justify-between">
-          <span className="text-slate-500">R² Score</span>
-          <span className="text-slate-200 font-bold">{d.r2.toFixed(4)}</span>
+          <span className="text-slate-500">Accuracy</span>
+          <span className="text-slate-200 font-bold">{d.accuracy_percentage.toFixed(1)}%</span>
         </div>
         <div className="flex justify-between">
           <span className="text-slate-500">MAE</span>
@@ -63,13 +63,13 @@ export default function AccuracyProof({
       country: code,
       name: modelMeta.countries[code]?.name ?? code,
       flag: modelMeta.countries[code]?.flag ?? "",
-      r2: metrics.r2,
+      accuracy_percentage: metrics.accuracy_percentage,
       mae: metrics.mae,
     })
   );
 
   // Sort by R² descending
-  chartData.sort((a, b) => b.r2 - a.r2);
+  chartData.sort((a, b) => b.accuracy_percentage - a.accuracy_percentage);
 
   const leakPreventionSteps = [
     {
@@ -90,7 +90,7 @@ export default function AccuracyProof({
     {
       icon: "🔗",
       title: "Direct Horizon Anchors + Weather-Weighted Interpolation",
-      desc: "Multi-day forecasts use predicted values as inputs — just like production. No oracle cheating.",
+      desc: "Anchor horizons are predicted directly; intermediate days are interpolated with weather context.",
     },
   ];
 
@@ -162,7 +162,7 @@ export default function AccuracyProof({
                   />
                   <Tooltip content={<CustomBarTooltip />} cursor={false} />
                   <Bar
-                    dataKey="r2"
+                    dataKey="accuracy_percentage"
                     radius={[0, 6, 6, 0]}
                     barSize={28}
                     isAnimationActive={true}
@@ -193,7 +193,7 @@ export default function AccuracyProof({
                     <p
                       className={`text-xs font-bold ${countryColors[d.country]?.text ?? "text-slate-300"}`}
                     >
-                      R² {d.r2.toFixed(4)} · MAE {d.mae.toFixed(2)}
+                      Accuracy {d.accuracy_percentage.toFixed(1)}% · MAE {d.mae.toFixed(2)}
                     </p>
                   </div>
                 </div>

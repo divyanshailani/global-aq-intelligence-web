@@ -19,7 +19,7 @@ export default function Footer() {
               <p className="text-sm font-semibold text-slate-200">
                 Global AQ Intelligence
               </p>
-              <p className="text-xs text-slate-500">V7 Thermodynamics Engine · June 2026</p>
+              <p className="text-xs text-slate-500">V7 Direct-Horizon Thermodynamics Engine Active Globally</p>
             </div>
           </div>
 
