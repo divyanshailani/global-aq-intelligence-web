@@ -1,6 +1,6 @@
 # 🌍 Global AQ Intelligence (Frontend)
 
-![Dashboard Screenshot](../pow-eda-pipeline/plots/forecast_horizons.png)
+![Dashboard Screenshot](./public/images/ui_dashboard.png)
 
 > **An enterprise-grade, weather-aware PM2.5 forecasting engine frontend.**
 
@@ -20,7 +20,7 @@ This frontend is designed for **Zero-Runtime Dependency**.
 The heavy lifting is done in the companion `pow-eda-pipeline` repository. Our **V7 Direct Thermodynamics Engine** features:
 - Independent models targeting specific horizons (`1d`, `7d`, `14d`, and `30d`).
 - A physics-based **Weather-Weighted Interpolator** that applies thermodynamic logic (rain washouts, wind dispersion, stagnation spikes) using 16-day Open-Meteo forecasts.
-- Strict chronological walk-forward validation (no temporal data leakage).
+- Chronological Holdout Validation (no temporal data leakage).
 
 *For the complete MLOps architecture, feature engineering, and model training code, please see the [pow-eda-pipeline repository](../pow-eda-pipeline).*
 
