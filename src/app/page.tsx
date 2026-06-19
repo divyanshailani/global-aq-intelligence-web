@@ -1,65 +1,166 @@
-import Image from "next/image";
+"use client";
+
+import React, { useState, useEffect } from "react";
+import Hero from "@/components/Hero";
+import CountryCard from "@/components/CountryCard";
+import ForecastDetail from "@/components/ForecastDetail";
+import AccuracyProof from "@/components/AccuracyProof";
+import DataSources from "@/components/DataSources";
+import Footer from "@/components/Footer";
+import type {
+  ModelMetaJSON,
+  AccuracyJSON,
+  PredictionJSON,
+  CountryCode,
+} from "@/types";
+
+const COUNTRY_ORDER: CountryCode[] = ["US", "IN", "AU", "GB"];
 
 export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+  const [modelMeta, setModelMeta] = useState<ModelMetaJSON | null>(null);
+  const [accuracy, setAccuracy] = useState<AccuracyJSON | null>(null);
+  const [predictions, setPredictions] = useState<
+    Record<string, PredictionJSON>
+  >({});
+  const [selectedCountry, setSelectedCountry] = useState<CountryCode | null>(
+    null
+  );
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [metaRes, accRes, inRes, usRes, gbRes, auRes] = await Promise.all(
+          [
+            fetch("/data/model_meta.json"),
+            fetch("/data/accuracy.json"),
+            fetch("/data/predictions_IN.json"),
+            fetch("/data/predictions_US.json"),
+            fetch("/data/predictions_GB.json"),
+            fetch("/data/predictions_AU.json"),
+          ]
+        );
+
+        const [meta, acc, inData, usData, gbData, auData] = await Promise.all([
+          metaRes.json() as Promise<ModelMetaJSON>,
+          accRes.json() as Promise<AccuracyJSON>,
+          inRes.json() as Promise<PredictionJSON>,
+          usRes.json() as Promise<PredictionJSON>,
+          gbRes.json() as Promise<PredictionJSON>,
+          auRes.json() as Promise<PredictionJSON>,
+        ]);
+
+        setModelMeta(meta);
+        setAccuracy(acc);
+        setPredictions({
+          IN: inData,
+          US: usData,
+          GB: gbData,
+          AU: auData,
+        });
+      } catch (err) {
+        console.error("Failed to load data:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadData();
+  }, []);
+
+  const handleCardClick = (code: CountryCode) => {
+    setSelectedCountry(selectedCountry === code ? null : code);
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center ambient-bg">
+        <div className="text-center">
+          <div className="w-12 h-12 mx-auto mb-4 rounded-full border-2 border-cyan-500/20 border-t-cyan-500 animate-spin" />
+          <p className="text-sm text-slate-400 animate-pulse">
+            Loading forecast data...
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </div>
+    );
+  }
+
+  if (!modelMeta || !accuracy) {
+    return (
+      <div className="min-h-screen flex items-center justify-center ambient-bg">
+        <p className="text-sm text-rose-400">Failed to load data.</p>
+      </div>
+    );
+  }
+
+  return (
+    <main className="flex-1">
+      {/* Hero */}
+      <Hero />
+
+      {/* Country Forecasts */}
+      <section id="forecasts" className="pt-10 pb-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          {/* Section header */}
+          <div className="text-center mb-14">
+            <p className="text-xs font-semibold tracking-[0.2em] uppercase text-cyan-400/70 mb-3">
+              Real-Time Predictions
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-slate-100">
+              Country Forecasts
+            </h2>
+            <p className="mt-3 text-slate-400 max-w-xl mx-auto text-sm leading-relaxed">
+              Click any country card to expand its 30-day PM2.5 forecast with
+              confidence bands and zone breakdowns.
+            </p>
+          </div>
+
+          {/* Country cards grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+            {COUNTRY_ORDER.map((code) => {
+              const meta = modelMeta.countries[code];
+              const pred = predictions[code];
+              if (!meta || !pred) return null;
+              return (
+                <CountryCard
+                  key={code}
+                  code={code}
+                  meta={meta}
+                  forecast={pred.forecast}
+                  onClick={() => handleCardClick(code)}
+                  isSelected={selectedCountry === code}
+                />
+              );
+            })}
+          </div>
+
+          {/* Expanded forecast detail */}
+          {selectedCountry && predictions[selectedCountry] && (
+            <div className="space-y-5">
+              <ForecastDetail
+                code={selectedCountry}
+                meta={modelMeta.countries[selectedCountry]}
+                forecast={predictions[selectedCountry].forecast}
+              />
+            </div>
+          )}
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Section divider */}
+      <div className="section-divider mx-auto max-w-4xl" />
+
+      {/* Accuracy Proof */}
+      <AccuracyProof accuracy={accuracy} modelMeta={modelMeta} />
+
+      {/* Section divider */}
+      <div className="section-divider mx-auto max-w-4xl" />
+
+      {/* Data Sources */}
+      <DataSources />
+
+      {/* Footer */}
+      <Footer />
+    </main>
   );
 }

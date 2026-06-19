@@ -39,3 +39,36 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ── Security: Never commit these ──────────────────────────
+# Trained model files (large + sensitive)
+*.pkl
+*.joblib
+*.h5
+models/
+admin/models/
+
+# Raw data fetched from APIs (can contain personal/geo info)
+data/raw/
+admin/data/raw/
+*.csv
+
+# Admin pipeline output logs
+admin/logs/
+admin/output/
+
+# API keys / secrets
+.env.local
+.env.production
+secrets.json
+api_keys.json
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+admin/__pycache__/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
