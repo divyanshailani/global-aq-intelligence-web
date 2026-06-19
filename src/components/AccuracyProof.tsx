@@ -56,6 +56,8 @@ export default function AccuracyProof({
   accuracy,
   modelMeta,
 }: AccuracyProofProps) {
+  const { live_validation_count } = accuracy;
+
   const chartData = Object.entries(accuracy.training_metrics).map(
     ([code, metrics]) => ({
       country: code,
@@ -107,6 +109,18 @@ export default function AccuracyProof({
             Rigorous evaluation metrics and data leakage prevention — because
             trustworthy forecasts demand transparent validation.
           </p>
+          <div className="mt-6 flex justify-center">
+            {live_validation_count === 0 ? (
+              <span className="text-xs text-slate-500/70 bg-white/5 px-3 py-1.5 rounded-full border border-white/5">
+                Pending Live Validation (0 Days) - Displaying strict temporal holdout backtest.
+              </span>
+            ) : (
+              <div className="flex items-center gap-2 bg-emerald-500/10 px-4 py-2 rounded-full border border-emerald-500/20 text-emerald-400 text-sm font-bold shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+                <div className="h-2 w-2 rounded-full animate-pulse bg-green-500"></div>
+                Live Validated on {live_validation_count} days of real-world production data.
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
