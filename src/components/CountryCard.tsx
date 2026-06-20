@@ -83,7 +83,7 @@ export default function CountryCard({
     >
       <div className="relative z-10">
         {/* Header */}
-        <div className="flex items-start justify-between mb-4">
+        <div className="flex flex-wrap sm:flex-nowrap items-start justify-between gap-3 mb-4">
           <div className="flex items-center gap-3">
             <span className="text-2xl">{meta.flag}</span>
             <div>
@@ -161,7 +161,7 @@ export default function CountryCard({
               )}
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 mt-3 sm:mt-0">
             {meta.anchor && (
               <span className="text-[10px] mr-1" style={{ color: "var(--text-muted)" }}>
                 Anchor: {meta.anchor}

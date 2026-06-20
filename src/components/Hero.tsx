@@ -92,7 +92,7 @@ export default function Hero({ lastPipelineRun }: { lastPipelineRun?: string }) 
         </p>
 
         {/* Stats row */}
-        <div className="grid grid-cols-4 gap-6 sm:gap-10 max-w-lg mx-auto animate-fade-in-up opacity-0 stagger-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-10 max-w-lg mx-auto animate-fade-in-up opacity-0 stagger-3">
           {[
             { value: "4", label: "Countries", color: "#4fb8b0" },
             { value: "200+", label: "Stations", color: "#6b8ec8" },
