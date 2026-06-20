@@ -121,22 +121,36 @@ export default function Home() {
               const meta = modelMeta.countries[code];
               const pred = predictions[code];
               if (!meta || !pred) return null;
+              
+              const isSelected = selectedCountry === code;
+
               return (
-                <CountryCard
-                  key={code}
-                  code={code}
-                  meta={meta}
-                  forecast={pred.forecast}
-                  onClick={() => handleCardClick(code)}
-                  isSelected={selectedCountry === code}
-                />
+                <React.Fragment key={code}>
+                  <CountryCard
+                    code={code}
+                    meta={meta}
+                    forecast={pred.forecast}
+                    onClick={() => handleCardClick(code)}
+                    isSelected={isSelected}
+                  />
+                  {/* Render inline ONLY on mobile (right under the clicked card) */}
+                  {isSelected && (
+                    <div className="col-span-1 block sm:hidden space-y-5 mb-2 mt-2">
+                      <ForecastDetail
+                        code={code}
+                        meta={meta}
+                        forecast={pred.forecast}
+                      />
+                    </div>
+                  )}
+                </React.Fragment>
               );
             })}
           </div>
 
-          {/* Expanded forecast detail */}
+          {/* Expanded forecast detail (Desktop/Tablet: render below all cards) */}
           {selectedCountry && predictions[selectedCountry] && (
-            <div className="space-y-5">
+            <div className="hidden sm:block space-y-5">
               <ForecastDetail
                 code={selectedCountry}
                 meta={modelMeta.countries[selectedCountry]}
