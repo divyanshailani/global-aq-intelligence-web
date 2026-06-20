@@ -13,6 +13,7 @@ export interface CountryMeta {
   last_data_date?: string;
   forecast_days?: number;
   anchor?: string;
+  fire_count?: number;
 }
 
 export interface ModelMetaJSON {

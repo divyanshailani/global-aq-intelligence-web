@@ -167,6 +167,12 @@ export default function CountryCard({
                 Anchor: {meta.anchor}
               </span>
             )}
+            {meta.fire_count !== undefined && meta.fire_count > 0 && (
+              <div className="flex items-center gap-1.5 px-2 py-1 rounded-md" style={{ background: 'rgba(255,255,255,0.03)' }}>
+                <span className="text-sm">🔥</span>
+                <span className="text-[10px]" style={{ color: "var(--text-muted)" }}>{meta.fire_count} Active Fires</span>
+              </div>
+            )}
             {avgWind > 0 && (
               <div className="flex items-center gap-1.5 px-2 py-1 rounded-md" style={{ background: 'rgba(255,255,255,0.03)' }}>
                 <span className="text-sm">🌪️</span>
