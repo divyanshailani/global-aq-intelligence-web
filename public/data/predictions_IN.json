@@ -7,12 +7,12 @@
     "confidence": "high",
     "tag": "High Confidence",
     "tag_color": "green",
-    "reason": "Accuracy=0.0%, V9 XGBoost Engine",
-    "accuracy_percentage": 0,
+    "reason": "Accuracy=72.5%, V9 XGBoost Engine",
+    "accuracy_percentage": 72.52,
     "test_mae": 10.41,
     "mase": 2.75
   },
-  "generated_at": "2026-06-20T17:24:35.109545",
+  "generated_at": "2026-06-20T17:33:00.056543",
   "last_data_date": "2026-06-17",
   "forecast": [
     {

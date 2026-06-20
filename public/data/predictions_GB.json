@@ -7,12 +7,12 @@
     "confidence": "experimental",
     "tag": "Experimental: Limited Seasonal Data",
     "tag_color": "yellow",
-    "reason": "Accuracy=0.0%, V9 XGBoost Engine",
-    "accuracy_percentage": 0,
+    "reason": "Accuracy=64.4%, V9 XGBoost Engine",
+    "accuracy_percentage": 64.37,
     "test_mae": 2.26,
     "mase": 1.77
   },
-  "generated_at": "2026-06-20T17:26:16.272079",
+  "generated_at": "2026-06-20T17:34:36.840784",
   "last_data_date": "2026-06-17",
   "forecast": [
     {
