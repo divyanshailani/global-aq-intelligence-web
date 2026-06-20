@@ -47,7 +47,7 @@ function DayCell({ d }: { d: DayData; maxPm: number }) {
     >
       <div>
         <p className={`text-[10px] font-semibold mb-0.5 ${d.isToday ? "text-[#4fb8b0]" : d.isTomorrow ? "text-[#8b7eb8]" : "text-slate-500"}`}>
-          {d.isToday ? "Today" : d.isTomorrow ? "Tmw" : d.weekday}
+          {d.isToday ? "Today" : d.isTomorrow ? "Tomorrow" : d.weekday}
         </p>
         <p className="text-[9px] text-slate-600 mb-1 hidden sm:block">{d.monthDay}</p>
       </div>
@@ -72,11 +72,13 @@ export default function PredictionCalendar({ forecast }: Props) {
       }
     }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const tmw = new Date(today);
-    tmw.setDate(tmw.getDate() + 1);
+    const now = new Date();
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    const localTodayStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
 
+    const tmwDate = new Date(now);
+    tmwDate.setDate(tmwDate.getDate() + 1);
+    const localTmwStr = `${tmwDate.getFullYear()}-${pad(tmwDate.getMonth() + 1)}-${pad(tmwDate.getDate())}`;
     return Array.from(dateMap.values())
       .sort((a, b) => new Date(a.target_date).getTime() - new Date(b.target_date).getTime())
       .slice(-30)
@@ -92,8 +94,8 @@ export default function PredictionCalendar({ forecast }: Props) {
           horizon: pt.horizon_days,
           confidencePct: pt.confidence_pct,
           stations: pt.stations,
-          isToday: d.getTime() === today.getTime(),
-          isTomorrow: d.getTime() === tmw.getTime(),
+          isToday: pt.target_date === localTodayStr,
+          isTomorrow: pt.target_date === localTmwStr,
           weekday: d.toLocaleDateString("en-US", { weekday: "short" }),
           monthDay: d.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
         };
