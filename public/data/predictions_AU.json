@@ -10,7 +10,8 @@
     "reason": "Accuracy=69.6%, V9.4 Geospatial Ensemble",
     "accuracy_percentage": 69.63,
     "test_mae": 1.83,
-    "mase": 1.29
+    "mase": 1.29,
+    "fire_count": 1505
   },
   "generated_at": "2026-06-20T19:23:09.972095",
   "last_data_date": "2026-06-17",
