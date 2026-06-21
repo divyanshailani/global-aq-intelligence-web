@@ -19,7 +19,7 @@ export default function Footer() {
               <p className="text-sm font-semibold text-slate-200">
                 Global AQ Intelligence
               </p>
-              <p className="text-xs text-slate-500">V9.4 Geospatial Ensemble Active (VIIRS + XGBoost)</p>
+              <p className="text-xs text-slate-500">V11 3D Atmospheric Ensemble Active (AOD + VIIRS)</p>
             </div>
           </div>
 
