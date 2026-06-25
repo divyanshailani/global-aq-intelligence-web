@@ -1,22 +1,28 @@
 "use client";
 
 import React, { useMemo } from "react";
-import {
-  AreaChart,
-  Area,
-  ResponsiveContainer,
-  YAxis,
-} from "recharts";
+import { AreaChart, Area, ResponsiveContainer, YAxis } from "recharts";
 import ConfidenceTag from "./ConfidenceTag";
-import { EPA_BREAKPOINTS, calculateAQI, getLocalAQIContext } from "@/utils/aqi_calculator";
+import { calculateAQI, getLocalAQIContext } from "@/utils/aqi_calculator";
 import type { CountryMeta, ForecastPoint } from "@/types";
 
-const TRUE_STATION_COUNT: Record<string, string> = {
-  US: "~1,530",
-  IN: "~539",
-  AU: "~168",
-  GB: "~150",
-};
+const STATION_COUNT: Record<string, string> = { US: "1,565", IN: "590", AU: "201", GB: "367" };
+
+function aqiColor(cat: string): string {
+  if (cat === "Good") return "#4caf82";
+  if (cat === "Moderate") return "#c9a227";
+  if (cat === "Unhealthy for Sensitive Groups") return "#bf6f30";
+  if (cat === "Unhealthy" || cat === "Very Unhealthy") return "#b85555";
+  return "#8f5ca8";
+}
+
+function aqiBadge(cat: string): React.CSSProperties {
+  if (cat === "Good") return { background: "rgba(76,175,130,0.08)", color: "#4caf82", border: "1px solid rgba(76,175,130,0.18)" };
+  if (cat === "Moderate") return { background: "rgba(201,162,39,0.08)", color: "#c9a227", border: "1px solid rgba(201,162,39,0.18)" };
+  if (cat === "Unhealthy for Sensitive Groups") return { background: "rgba(191,111,48,0.08)", color: "#bf6f30", border: "1px solid rgba(191,111,48,0.18)" };
+  if (cat === "Unhealthy" || cat === "Very Unhealthy") return { background: "rgba(184,85,85,0.08)", color: "#b85555", border: "1px solid rgba(184,85,85,0.18)" };
+  return { background: "rgba(143,92,168,0.08)", color: "#8f5ca8", border: "1px solid rgba(143,92,168,0.18)" };
+}
 
 interface CountryCardProps {
   code: string;
@@ -24,196 +30,220 @@ interface CountryCardProps {
   forecast: ForecastPoint[];
   onClick: () => void;
   isSelected: boolean;
+  stacked?: boolean; // ← stacked = in the left column when forecast is open
 }
 
-export default function CountryCard({
-  code,
-  meta,
-  forecast,
-  onClick,
-  isSelected,
-}: CountryCardProps) {
+export default function CountryCard({ code, meta, forecast, onClick, isSelected, stacked = false }: CountryCardProps) {
   const sparklineData = useMemo(() => {
     const dateMap = new Map<string, ForecastPoint>();
     const sorted = [...forecast].sort(
       (a, b) => new Date(a.target_date).getTime() - new Date(b.target_date).getTime()
     );
     for (const pt of sorted) {
-      if (pt.horizon_days <= 7) {
-        dateMap.set(pt.target_date, pt);
-      }
+      if (pt.horizon_days <= 7) dateMap.set(pt.target_date, pt);
     }
     return Array.from(dateMap.values()).slice(-7);
   }, [forecast]);
 
   const avgPM25 = useMemo(() => {
-    if (sparklineData.length === 0) return 0;
-    return sparklineData.reduce((acc, pt) => acc + pt.mean_pm25, 0) / sparklineData.length;
+    if (!sparklineData.length) return 0;
+    return sparklineData.reduce((a, p) => a + p.mean_pm25, 0) / sparklineData.length;
   }, [sparklineData]);
 
   const avgWind = useMemo(() => {
-    if (sparklineData.length === 0) return 0;
-    const withWind = sparklineData.filter(pt => pt.weather_context?.wind !== undefined);
-    if (withWind.length === 0) return 0;
-    return withWind.reduce((acc, pt) => acc + (pt.weather_context?.wind || 0), 0) / withWind.length;
+    const pts = sparklineData.filter(p => p.weather_context?.wind !== undefined);
+    if (!pts.length) return 0;
+    return pts.reduce((a, p) => a + (p.weather_context?.wind || 0), 0) / pts.length;
   }, [sparklineData]);
 
   const avgTemp = useMemo(() => {
-    if (sparklineData.length === 0) return 0;
-    const withTemp = sparklineData.filter(pt => pt.weather_context?.temp !== undefined);
-    if (withTemp.length === 0) return 0;
-    return withTemp.reduce((acc, pt) => acc + (pt.weather_context?.temp || 0), 0) / withTemp.length;
+    const pts = sparklineData.filter(p => p.weather_context?.temp !== undefined);
+    if (!pts.length) return 0;
+    return pts.reduce((a, p) => a + (p.weather_context?.temp || 0), 0) / pts.length;
   }, [sparklineData]);
 
   const aqiResult = useMemo(() => calculateAQI(avgPM25), [avgPM25]);
   const localContext = useMemo(() => getLocalAQIContext(avgPM25, code), [avgPM25, code]);
+  const color = aqiColor(aqiResult.category);
 
-  // Sparkline color
-  const sparkColor = aqiResult.hex;
-
-  return (
-    <button
-      onClick={onClick}
-      className={`glass-card w-full text-left p-5 sm:p-6 cursor-pointer group relative overflow-hidden ${
-        isSelected ? "!border-[#4fb8b0]/25" : ""
-      }`}
-      style={{
-        borderLeft: `3px solid ${isSelected ? '#4fb8b0' : 'rgba(79,184,176,0.15)'}`,
-      }}
-    >
-      <div className="relative z-10">
-        {/* Header */}
-        <div className="flex flex-wrap sm:flex-nowrap items-start justify-between gap-3 mb-4">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">{meta.flag}</span>
-            <div>
-              <h3 className="text-base font-semibold" style={{ color: "var(--text-primary)" }}>
-                {meta.name}
-              </h3>
-              <p className="text-[11px] font-medium" style={{ color: "var(--text-muted)" }}>
-                {code} · {TRUE_STATION_COUNT[code] || meta.station_count} stations
-              </p>
-            </div>
-          </div>
-          <ConfidenceTag tag={meta.tag} color={meta.tag_color} />
+  // ── Unused compact block - removed ──
+  if (false) {
+    return (
+      <button
+        onClick={onClick}
+        className={`country-compact-row${isSelected ? " active" : ""}`}
+      >
+        <span style={{ fontSize: "20px", flexShrink: 0 }}>{meta.flag}</span>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-1)", fontFamily: "'Inter', sans-serif" }}>
+            {meta.name}
+          </p>
+          <p style={{ fontSize: "10px", color: "var(--text-3)", fontFamily: "'Inter', sans-serif", marginTop: "1px" }}>
+            {STATION_COUNT[code]} stations
+          </p>
         </div>
-
-        {/* Sparkline */}
-        <div className="h-14 mb-4 -mx-1">
+        {/* Mini sparkline */}
+        <div style={{ width: "52px", height: "28px", flexShrink: 0 }}>
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={sparklineData}>
               <defs>
-                <linearGradient id={`spark-${code}`} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor={sparkColor} stopOpacity={0.15} />
-                  <stop offset="100%" stopColor={sparkColor} stopOpacity={0} />
+                <linearGradient id={`csg-${code}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={color} stopOpacity={0.2} />
+                  <stop offset="100%" stopColor={color} stopOpacity={0} />
                 </linearGradient>
               </defs>
               <YAxis domain={["dataMin - 1", "dataMax + 1"]} hide />
               <Area
-                type="monotone"
-                dataKey="mean_pm25"
-                stroke={sparkColor}
-                strokeWidth={1.5}
-                fill={`url(#spark-${code})`}
-                dot={false}
-                isAnimationActive={true}
-                animationDuration={1200}
+                type="monotone" dataKey="mean_pm25"
+                stroke={color} strokeWidth={1.5}
+                fill={`url(#csg-${code})`} dot={false}
+                isAnimationActive={false}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+        <div style={{ textAlign: "right", flexShrink: 0 }}>
+          <p style={{ fontSize: "18px", fontWeight: 700, color, fontFamily: "'JetBrains Mono', monospace", lineHeight: 1 }}>
+            {aqiResult.aqi}
+          </p>
+          <p style={{ fontSize: "9px", color: "var(--text-3)", fontFamily: "'Inter', sans-serif", marginTop: "2px" }}>AQI</p>
+        </div>
+      </button>
+    );
+  }
+
+  // ── FULL MODE: expanded grid card ──
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        width: "100%",
+        textAlign: "left",
+        background: "var(--surface)",
+        border: `1px solid ${isSelected ? "var(--accent-border)" : "var(--border)"}`,
+        borderTop: isSelected ? `2px solid var(--accent)` : `1px solid var(--border)`,
+        borderRadius: "8px",
+        padding: "0",
+        cursor: "pointer",
+        transition: "border-color 0.2s ease, background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+      }}
+      onMouseEnter={e => {
+        if (!isSelected) {
+          const el = e.currentTarget as HTMLElement;
+          el.style.borderColor = "var(--border-hover)";
+          el.style.background = "var(--surface-hover)";
+          el.style.transform = "translateY(-2px)";
+          el.style.boxShadow = "0 8px 32px rgba(0,0,0,0.08)";
+        }
+      }}
+      onMouseLeave={e => {
+        if (!isSelected) {
+          const el = e.currentTarget as HTMLElement;
+          el.style.borderColor = "var(--border)";
+          el.style.background = "var(--surface)";
+          el.style.transform = "translateY(0)";
+          el.style.boxShadow = "none";
+        }
+      }}
+    >
+      {/* Card header */}
+      <div style={{
+        padding: "16px 20px",
+        borderBottom: "1px solid var(--border)",
+        background: "var(--surface-raised)",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <span style={{ fontSize: "20px", lineHeight: 1 }}>{meta.flag}</span>
+          <div>
+            <p style={{ fontSize: "14px", fontWeight: 600, color: "var(--text-1)", lineHeight: 1.2, fontFamily: "'Inter', sans-serif" }}>
+              {meta.name}
+            </p>
+            <p style={{ fontSize: "11px", color: "var(--text-3)", marginTop: "2px", fontFamily: "'Inter', sans-serif" }}>
+              {STATION_COUNT[code]} stations
+            </p>
+          </div>
+        </div>
+        <ConfidenceTag tag={meta.tag} color={meta.tag_color} />
+      </div>
+
+      {/* Card body */}
+      <div style={{ padding: "20px 20px 16px" }}>
+
+        {/* Sparkline */}
+        <div style={{ height: stacked ? "40px" : "56px", marginBottom: stacked ? "10px" : "16px" }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={sparklineData}>
+              <defs>
+                <linearGradient id={`sg-${code}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={color} stopOpacity={0.2} />
+                  <stop offset="100%" stopColor={color} stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <YAxis domain={["dataMin - 1", "dataMax + 1"]} hide />
+              <Area type="monotone" dataKey="mean_pm25"
+                stroke={color} strokeWidth={1.5}
+                fill={`url(#sg-${code})`} dot={false}
+                isAnimationActive animationDuration={800}
               />
             </AreaChart>
           </ResponsiveContainer>
         </div>
 
-        {/* Stats */}
-        <div className="flex flex-col gap-3">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-[11px] mb-0.5" style={{ color: "var(--text-muted)" }}>US EPA AQI (7d)</p>
-              <div className="flex items-baseline gap-1.5">
-                <p className={`text-3xl font-bold leading-none ${aqiResult.colorClass}`}>
-                  {aqiResult.aqi}
-                </p>
-              </div>
-              
-              {/* Inline Geopolitics (Zero-Click) */}
-              <div className="mt-2 flex items-center gap-1.5 text-[10px]">
-                <span className={`font-medium ${aqiResult.colorClass}`}>{aqiResult.category}</span>
-                <span className="text-slate-600">|</span>
-                <span className="text-slate-400">{localContext}</span>
-              </div>
-            </div>
-            
-            {/* Elevated Raw Physics & Accuracy */}
-            <div className="text-right flex flex-col items-end">
-              <div className="bg-white/5 border border-white/10 rounded-full px-2.5 py-1 flex items-center gap-1.5 mb-2 shadow-sm">
-                <span className="text-[9px] font-medium text-slate-400 uppercase tracking-wider">Raw Mass</span>
-                <div className="flex items-baseline gap-0.5">
-                  <span className="text-[12px] font-bold text-slate-100">{avgPM25.toFixed(1)}</span>
-                  <span className="text-[9px] text-slate-500">µg/m³</span>
-                </div>
-              </div>
-              {meta.accuracy_percentage !== undefined && (
-                <p className={`text-[10px] font-bold tracking-wide ${
-                  meta.accuracy_percentage >= 80 ? 'text-emerald-400' :
-                  meta.accuracy_percentage >= 60 ? 'text-amber-400' : 'text-rose-500'
-                }`}>
-                  ACCURACY: {meta.accuracy_percentage.toFixed(1)}%
-                </p>
-              )}
-            </div>
-          </div>
-          <div className="flex flex-wrap items-center gap-2 mt-3 sm:mt-0">
-            {meta.anchor && (
-              <span className="text-[10px] mr-1" style={{ color: "var(--text-muted)" }}>
-                Anchor: {meta.anchor}
-              </span>
-            )}
-
-            {avgWind > 0 && (
-              <div className="flex items-center gap-1.5 px-2 py-1 rounded-md" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                <span className="text-sm">🌪️</span>
-                <span className="text-[10px]" style={{ color: "var(--text-muted)" }}>{avgWind.toFixed(1)} km/h</span>
-              </div>
-            )}
-            {avgTemp !== 0 && (
-              <div className="flex items-center gap-1.5 px-2 py-1 rounded-md" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                <span className="text-sm">🌡️</span>
-                <span className="text-[10px]" style={{ color: "var(--text-muted)" }}>{avgTemp.toFixed(1)} °C</span>
-              </div>
-            )}
-          </div>
+        {/* AQI + category */}
+        <div style={{ display: "flex", alignItems: "baseline", gap: "10px", marginBottom: stacked ? "8px" : "12px" }}>
+          <span style={{ fontSize: stacked ? "28px" : "40px", fontWeight: 700, letterSpacing: "-0.03em", color, lineHeight: 1, fontFamily: "'JetBrains Mono', monospace" }}>
+            {aqiResult.aqi}
+          </span>
+          <span style={{ ...aqiBadge(aqiResult.category), display: "inline-flex", alignItems: "center", padding: "3px 8px", borderRadius: "4px", fontSize: "11px", fontWeight: 500, fontFamily: "'Inter', sans-serif", whiteSpace: "nowrap" }}>
+            {aqiResult.category}
+          </span>
         </div>
 
-        {/* CTA Button */}
-        <div className="mt-4 pt-3" style={{ borderTop: "1px solid var(--border-subtle)" }}>
-          <div
-            className="flex items-center justify-center gap-2 w-full py-2 px-4 rounded-lg transition-all duration-300"
-            style={isSelected ? {
-              background: 'rgba(79,184,176,0.06)',
-              border: '1px solid rgba(79,184,176,0.15)',
-              color: '#4fb8b0',
-            } : {
-              background: 'rgba(79,184,176,0.10)',
-              border: '1px solid rgba(79,184,176,0.25)',
-              color: '#4fb8b0',
-              boxShadow: '0 0 12px rgba(79,184,176,0.08)',
-            }}
-          >
-            {!isSelected && (
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#4fb8b0' }} />
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5" style={{ background: '#4fb8b0' }} />
-              </span>
-            )}
-            <span className="text-[11px] font-semibold uppercase tracking-[0.12em]">
-              {isSelected ? 'Collapse forecast' : 'View up to 30-day forecast'}
+        {/* PM2.5 + weather */}
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: stacked ? "8px" : "12px", flexWrap: "wrap" }}>
+          <span style={{ fontSize: "11px", color: "var(--text-2)", fontFamily: "'JetBrains Mono', monospace" }}>
+            <span style={{ color: "var(--text-3)", marginRight: "4px" }}>PM2.5</span>
+            {avgPM25.toFixed(1)} µg/m³
+          </span>
+          {avgWind > 0 && (
+            <span style={{ fontSize: "11px", color: "var(--text-3)", background: "var(--surface-raised)", border: "1px solid var(--border)", borderRadius: "4px", padding: "2px 8px", fontFamily: "'JetBrains Mono', monospace" }}>
+              {avgWind.toFixed(1)} km/h
             </span>
+          )}
+          {avgTemp !== 0 && (
+            <span style={{ fontSize: "11px", color: "var(--text-3)", background: "var(--surface-raised)", border: "1px solid var(--border)", borderRadius: "4px", padding: "2px 8px", fontFamily: "'JetBrains Mono', monospace" }}>
+              {avgTemp.toFixed(1)}°C
+            </span>
+          )}
+        </div>
+
+        {/* Context — hidden in stacked mode */}
+        {!stacked && (
+          <p style={{ fontSize: "11px", color: "var(--text-3)", lineHeight: 1.55, marginBottom: "14px", fontFamily: "'Inter', sans-serif" }}>
+            {localContext}
+          </p>
+        )}
+
+        {/* CTA */}
+        <div style={{
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          paddingTop: "12px", borderTop: "1px solid var(--border)",
+        }}>
+          <span style={{ fontSize: "12px", color: isSelected ? "var(--accent)" : "var(--text-3)", fontWeight: 500, fontFamily: "'Inter', sans-serif" }}>
+            {stacked ? (isSelected ? "Viewing forecast →" : "Switch forecast") : (isSelected ? "Close forecast" : "View 30-day forecast")}
+          </span>
+          {!stacked && (
             <svg
-              className={`w-3 h-3 transition-transform duration-300 ${isSelected ? 'rotate-180' : ''}`}
+              style={{ width: "13px", height: "13px", color: "var(--accent)", transform: isSelected ? "rotate(-90deg)" : "rotate(0deg)", transition: "transform 0.3s ease" }}
               fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
-          </div>
+          )}
         </div>
       </div>
     </button>

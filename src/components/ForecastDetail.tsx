@@ -1,21 +1,14 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect, useRef } from "react";
 import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  ReferenceLine,
-  ReferenceArea,
+  AreaChart, Area, XAxis, YAxis, CartesianGrid,
+  Tooltip, ResponsiveContainer,
 } from "recharts";
 import type { CountryMeta, ForecastPoint } from "@/types";
 import ConfidenceTag from "./ConfidenceTag";
 import PredictionCalendar from "./PredictionTimeline";
-import { EPA_BREAKPOINTS } from "@/utils/aqi_calculator";
+import { calculateAQI } from "@/utils/aqi_calculator";
 
 interface ForecastDetailProps {
   code: string;
@@ -31,73 +24,47 @@ interface ChartDataPoint {
   max: number;
   range: [number, number];
   horizon: number;
-  confidence: string;
   confidencePct: number;
-  stations: number;
-  zone: "7d" | "15d" | "30d";
-  weather?: {
-    temp: number;
-    wind: number;
-    precip: number;
-  };
+  weather?: { temp: number; wind: number; precip: number };
 }
 
-// Custom tooltip
-function CustomTooltip({
-  active,
-  payload,
-}: {
+function CustomTooltip({ active, payload }: {
   active?: boolean;
   payload?: Array<{ payload: ChartDataPoint }>;
-  label?: string;
 }) {
-  if (!active || !payload || !payload.length) return null;
+  if (!active || !payload?.length) return null;
   const d = payload[0].payload;
-
-  const zoneColors: Record<string, { bg: string; text: string; label: string }> = {
-    "7d": { bg: "bg-[#4fb8b0]/15", text: "text-[#4fb8b0]", label: "7-Day (High)" },
-    "15d": { bg: "bg-[#d4a24c]/15", text: "text-[#d4a24c]", label: "15-Day (Medium)" },
-    "30d": { bg: "bg-[#d4847a]/15", text: "text-[#d4847a]", label: "30-Day (Low)" },
-  };
-
-  const zone = zoneColors[d.zone];
+  const aqi = calculateAQI(d.mean);
 
   return (
-    <div className="glass-card-static p-3 min-w-[180px] !rounded-lg text-xs">
-      <p className="text-slate-300 font-semibold mb-2">{d.date}</p>
-      <div className="space-y-1.5">
-        <div className="flex justify-between">
-          <span className="text-slate-500">Mean PM2.5</span>
-          <span className="text-slate-200 font-bold">{d.mean.toFixed(1)} µg/m³</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-slate-500">Range</span>
-          <span className="text-slate-400">
-            {d.min.toFixed(1)} – {d.max.toFixed(1)}
-          </span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-slate-500">Confidence</span>
-          <span className="text-slate-400">{d.confidencePct}%</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-slate-500">Horizon</span>
-          <span className="text-slate-400">Day {d.horizon}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-slate-500">Zone</span>
-          <span className={`${zone.bg} ${zone.text} px-1.5 py-0.5 rounded text-[10px] font-semibold`}>
-            {zone.label}
-          </span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-slate-500">Stations</span>
-          <span className="text-slate-400">{d.stations}</span>
-        </div>
+    <div style={{
+      background: "var(--surface-raised)",
+      border: "1px solid var(--border)",
+      borderRadius: "8px", padding: "12px 16px",
+      minWidth: "200px", fontSize: "12px",
+      fontFamily: "'Inter', sans-serif",
+      boxShadow: "0 8px 32px rgba(0,0,0,0.08)",
+    }}>
+      <p style={{ color: "var(--text-1)", fontWeight: 600, marginBottom: "10px" }}>{d.date}</p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+        {[
+          ["Mean PM2.5", `${d.mean.toFixed(1)} µg/m³`],
+          ["AQI", `${aqi.aqi} — ${aqi.category}`],
+          ["Range", `${d.min.toFixed(1)} – ${d.max.toFixed(1)}`],
+          ["Confidence", `${d.confidencePct}%`],
+          ["Horizon", `Day ${d.horizon}`],
+        ].map(([label, value]) => (
+          <div key={label} style={{ display: "flex", justifyContent: "space-between", gap: "20px" }}>
+            <span style={{ color: "var(--text-3)" }}>{label}</span>
+            <span style={{ color: "var(--text-2)", fontFamily: "'JetBrains Mono', monospace" }}>{value}</span>
+          </div>
+        ))}
         {d.weather && (
-          <div className="flex justify-between pt-1 border-t border-slate-700/50 mt-1">
-            <span className="text-slate-500">Weather</span>
-            <span className="text-slate-400">🌪️ {d.weather.wind} km/h  🌡️ {d.weather.temp}°C</span>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: "20px", paddingTop: "6px", borderTop: "1px solid var(--border)", marginTop: "2px" }}>
+            <span style={{ color: "var(--text-3)" }}>Weather</span>
+            <span style={{ color: "var(--text-2)", fontFamily: "'JetBrains Mono', monospace" }}>
+              {d.weather.wind} km/h · {d.weather.temp}°C
+            </span>
           </div>
         )}
       </div>
@@ -105,264 +72,185 @@ function CustomTooltip({
   );
 }
 
-export default function ForecastDetail({
-  code,
-  meta,
-  forecast,
-}: ForecastDetailProps) {
+export default function ForecastDetail({ code, meta, forecast }: ForecastDetailProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      containerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  }, [code]);
+
   const chartData = useMemo(() => {
-    // Group by date, pick latest data per date
     const dateMap = new Map<string, ForecastPoint>();
     const sorted = [...forecast].sort(
-      (a, b) =>
-        new Date(a.target_date).getTime() - new Date(b.target_date).getTime()
+      (a, b) => new Date(a.target_date).getTime() - new Date(b.target_date).getTime()
     );
-
     for (const pt of sorted) {
       const existing = dateMap.get(pt.target_date);
-      if (!existing || pt.stations >= existing.stations) {
-        dateMap.set(pt.target_date, pt);
-      }
+      if (!existing || pt.stations >= existing.stations) dateMap.set(pt.target_date, pt);
     }
-
-    const entries = Array.from(dateMap.values())
-      .sort(
-        (a, b) =>
-          new Date(a.target_date).getTime() - new Date(b.target_date).getTime()
-      )
-      .slice(-30);
-
-    return entries.map((pt, idx): ChartDataPoint => {
-      const zone: "7d" | "15d" | "30d" =
-        idx < 7 ? "7d" : idx < 15 ? "15d" : "30d";
-      const d = new Date(pt.target_date);
-      return {
-        date: pt.target_date,
-        shortDate: `${d.getMonth() + 1}/${d.getDate()}`,
-        mean: Number(pt.mean_pm25.toFixed(2)),
-        min: Number(pt.min_pm25.toFixed(2)),
-        max: Number(pt.max_pm25.toFixed(2)),
-        range: [Number(pt.min_pm25.toFixed(2)), Number(pt.max_pm25.toFixed(2))],
-        horizon: pt.horizon_days,
-        confidence: pt.confidence,
-        confidencePct: pt.confidence_pct,
-        stations: pt.stations,
-        zone,
-        weather: pt.weather_context,
-      };
-    });
+    return Array.from(dateMap.values())
+      .sort((a, b) => new Date(a.target_date).getTime() - new Date(b.target_date).getTime())
+      .slice(-30)
+      .map((pt): ChartDataPoint => {
+        const d = new Date(pt.target_date);
+        return {
+          date: pt.target_date,
+          shortDate: `${d.getMonth() + 1}/${d.getDate()}`,
+          mean: Number(pt.mean_pm25.toFixed(2)),
+          min: Number(pt.min_pm25.toFixed(2)),
+          max: Number(pt.max_pm25.toFixed(2)),
+          range: [Number(pt.min_pm25.toFixed(2)), Number(pt.max_pm25.toFixed(2))],
+          horizon: pt.horizon_days,
+          confidencePct: pt.confidence_pct,
+          weather: pt.weather_context,
+        };
+      });
   }, [forecast]);
 
-  // Stats
   const stats = useMemo(() => {
-    if (chartData.length === 0)
-      return { avg: 0, min: 0, max: 0, avgConfidence: 0 };
-    const means = chartData.map((d) => d.mean);
-    const avg = means.reduce((a, b) => a + b, 0) / means.length;
-    const min = Math.min(...chartData.map((d) => d.min));
-    const max = Math.max(...chartData.map((d) => d.max));
-    const avgConfidence =
-      chartData.reduce((a, b) => a + b.confidencePct, 0) / chartData.length;
-    return { avg, min, max, avgConfidence };
+    if (!chartData.length) return { avg: 0, min: 0, max: 0, avgConf: 0 };
+    const means = chartData.map(d => d.mean);
+    return {
+      avg: means.reduce((a, b) => a + b, 0) / means.length,
+      min: Math.min(...chartData.map(d => d.min)),
+      max: Math.max(...chartData.map(d => d.max)),
+      avgConf: chartData.reduce((a, b) => a + b.confidencePct, 0) / chartData.length,
+    };
   }, [chartData]);
 
-  const zoneInfo = [
-    {
-      label: "Days 1–7",
-      style: "High Confidence",
-      color: "text-[#4fb8b0]",
-      bg: "bg-[#4fb8b0]/8",
-      border: "border-[#4fb8b0]/15",
-      barColor: "bg-[#4fb8b0]",
-      desc: "Solid — direct lag features",
-    },
-    {
-      label: "Days 8–15",
-      style: "Medium Confidence",
-      color: "text-[#d4a24c]",
-      bg: "bg-[#d4a24c]/8",
-      border: "border-[#d4a24c]/15",
-      barColor: "bg-[#d4a24c]",
-      desc: "Dashed — Direct Horizon Anchors + Weather-Weighted Interpolation",
-    },
-    {
-      label: "Days 16–30",
-      style: "Directional Only",
-      color: "text-[#d4847a]",
-      bg: "bg-[#d4847a]/8",
-      border: "border-[#d4847a]/15",
-      barColor: "bg-[#d4847a]",
-      desc: "Dotted — extended trend",
-    },
+  const statPills = [
+    { label: "30d Avg PM2.5", value: stats.avg.toFixed(1), unit: "µg/m³" },
+    { label: "Min PM2.5",     value: stats.min.toFixed(1), unit: "µg/m³" },
+    { label: "Max PM2.5",     value: stats.max.toFixed(1), unit: "µg/m³" },
+    { label: "Avg Confidence", value: stats.avgConf.toFixed(0), unit: "%" },
   ];
 
   return (
-    <>
-      <div className="animate-fade-in-up opacity-0 glass-card-static p-6 sm:p-8">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <div className="flex items-center gap-3">
-          <span className="text-2xl">{meta.flag}</span>
-          <div>
-            <h3 className="text-xl font-bold text-slate-100">
-              {meta.name}{" "}
-              <span className="text-sm font-normal text-slate-500">
-                — 30-Day Forecast
-              </span>
-            </h3>
-            <p className="text-xs text-slate-500 mt-0.5">{meta.reason}</p>
+    <div ref={containerRef} className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "16px", scrollMarginTop: "100px" }}>
+
+      {/* ── Top Card: Header & Stats ── */}
+      <div style={{
+        background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "8px",
+        overflow: "hidden",
+      }}>
+        {/* Card header */}
+        <div style={{
+          padding: "16px 24px", borderBottom: "1px solid var(--border)",
+          background: "var(--surface-raised)",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <span style={{ fontSize: "20px" }}>{meta.flag}</span>
+            <div>
+              <p style={{
+                fontSize: "15px", fontWeight: 600, color: "var(--text-1)",
+                fontFamily: "'Inter', sans-serif", lineHeight: 1.2,
+              }}>
+                {meta.name}
+                <span style={{
+                  color: "var(--text-3)", fontWeight: 400,
+                  marginLeft: "8px", fontSize: "13px",
+                }}>
+                  — 30-Day PM2.5 Forecast
+                </span>
+              </p>
+              {meta.reason && (
+                <p style={{ fontSize: "11px", color: "var(--text-3)", marginTop: "2px", fontFamily: "'Inter', sans-serif" }}>
+                  {meta.reason}
+                </p>
+              )}
+            </div>
+          </div>
+          <ConfidenceTag tag={meta.tag} color={meta.tag_color} size="md" />
+        </div>
+
+        <div style={{ padding: "24px" }}>
+          {/* Stat pills */}
+          <div style={{
+            display: "grid", gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "10px", marginBottom: "24px",
+          }}>
+            {statPills.map(s => (
+              <div key={s.label} style={{
+                background: "var(--surface-raised)", border: "1px solid var(--border)",
+                borderRadius: "6px", padding: "14px 16px",
+              }}>
+                <p style={{
+                  fontSize: "10px", fontWeight: 500, letterSpacing: "0.08em",
+                  textTransform: "uppercase", color: "var(--text-3)",
+                  marginBottom: "6px", fontFamily: "'Inter', sans-serif",
+                }}>
+                  {s.label}
+                </p>
+                <p style={{
+                  fontSize: "20px", fontWeight: 700, color: "var(--text-1)",
+                  fontFamily: "'JetBrains Mono', monospace", lineHeight: 1,
+                }}>
+                  {s.value}
+                  <span style={{
+                    fontSize: "11px", color: "var(--text-3)",
+                    fontWeight: 400, marginLeft: "4px",
+                  }}>
+                    {s.unit}
+                  </span>
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Area chart */}
+          <div style={{ height: "240px" }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={chartData} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
+                <defs>
+                  <linearGradient id={`mean-fill-${code}`} x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="var(--accent)" stopOpacity={0.18} />
+                    <stop offset="100%" stopColor="var(--accent)" stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id={`range-fill-${code}`} x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="var(--text-3)" stopOpacity={0.15} />
+                    <stop offset="100%" stopColor="var(--text-3)" stopOpacity={0.02} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
+                <XAxis
+                  dataKey="shortDate"
+                  tick={{ fontSize: 10, fill: "var(--text-3)", fontFamily: "'JetBrains Mono', monospace" }}
+                  axisLine={{ stroke: "var(--border)" }}
+                  tickLine={false}
+                  interval={Math.max(0, Math.floor(chartData.length / 8))}
+                />
+                <YAxis
+                  tick={{ fontSize: 10, fill: "var(--text-3)", fontFamily: "'JetBrains Mono', monospace" }}
+                  axisLine={false} tickLine={false} width={40}
+                  domain={["dataMin - 2", "dataMax + 2"]}
+                />
+                <Tooltip content={<CustomTooltip />} />
+                {/* Confidence band */}
+                <Area
+                  type="monotone" dataKey="range"
+                  stroke="none" fill={`url(#range-fill-${code})`}
+                  fillOpacity={1} isAnimationActive animationDuration={1000}
+                />
+                {/* Mean line — muted teal accent */}
+                <Area
+                  type="monotone" dataKey="mean"
+                  stroke="var(--accent)" strokeWidth={2}
+                  fill={`url(#mean-fill-${code})`}
+                  dot={false}
+                  activeDot={{ r: 4, stroke: "var(--accent)", strokeWidth: 2, fill: "var(--surface)" }}
+                  isAnimationActive animationDuration={1200}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
           </div>
         </div>
-        <ConfidenceTag tag={meta.tag} color={meta.tag_color} size="md" />
       </div>
 
-      {/* Stats bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-        {[
-          { label: "30d Avg PM2.5", value: `${stats.avg.toFixed(1)}`, unit: "µg/m³" },
-          { label: "Min Recorded", value: `${stats.min.toFixed(1)}`, unit: "µg/m³" },
-          { label: "Max Recorded", value: `${stats.max.toFixed(1)}`, unit: "µg/m³" },
-          { label: "Avg Confidence", value: `${stats.avgConfidence.toFixed(0)}`, unit: "%" },
-        ].map((s) => (
-          <div
-            key={s.label}
-            className="bg-white/[0.02] rounded-lg px-3 py-2.5 border border-white/[0.04]"
-          >
-            <p className="text-[10px] text-slate-500 uppercase tracking-wider font-medium">
-              {s.label}
-            </p>
-            <p className="text-lg font-bold text-slate-200 mt-0.5">
-              {s.value}
-              <span className="text-[10px] text-slate-500 font-normal ml-1">
-                {s.unit}
-              </span>
-            </p>
-          </div>
-        ))}
-      </div>
-
-      {/* Chart */}
-      <div className="h-72 sm:h-80 mb-6">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart
-            data={chartData}
-            margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
-          >
-            <defs>
-              <linearGradient id={`grad-7d-${code}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#4fb8b0" stopOpacity={0.15} />
-                <stop offset="100%" stopColor="#4fb8b0" stopOpacity={0} />
-              </linearGradient>
-              <linearGradient id={`grad-range-${code}`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#94a3b8" stopOpacity={0.08} />
-                <stop offset="100%" stopColor="#94a3b8" stopOpacity={0.02} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis
-              dataKey="shortDate"
-              tick={{ fontSize: 10, fill: "#64748b" }}
-              axisLine={{ stroke: "rgba(148,163,184,0.1)" }}
-              tickLine={false}
-              interval={Math.max(0, Math.floor(chartData.length / 8))}
-            />
-            <YAxis
-              tick={{ fontSize: 10, fill: "#64748b" }}
-              axisLine={false}
-              tickLine={false}
-              width={40}
-              domain={["dataMin - 2", "dataMax + 2"]}
-            />
-            <Tooltip content={<CustomTooltip />} />
-
-            {/* Smart Background Banding */}
-            {EPA_BREAKPOINTS.filter(bp => {
-              // Only render band if it overlaps with the actual data range on the chart
-              const overlapMin = Math.max(bp.cLow, stats.min);
-              const overlapMax = Math.min(bp.cHigh, stats.max);
-              return overlapMin <= overlapMax;
-            }).map((bp) => (
-              <ReferenceArea
-                key={bp.category}
-                y1={bp.cLow}
-                y2={bp.cHigh >= 500 ? undefined : bp.cHigh}
-                fill={bp.hex}
-                fillOpacity={0.05}
-                strokeOpacity={0}
-              />
-            ))}
-
-            {/* Confidence range band */}
-            <Area
-              type="monotone"
-              dataKey="range"
-              stroke="none"
-              fill={`url(#grad-range-${code})`}
-              fillOpacity={1}
-              isAnimationActive={true}
-              animationDuration={1200}
-            />
-
-            {/* Reference lines for zone boundaries */}
-            {chartData.length > 7 && (
-              <ReferenceLine
-                x={chartData[6]?.shortDate}
-                stroke="rgba(79,184,176,0.15)"
-                strokeDasharray="4 4"
-                label=""
-              />
-            )}
-            {chartData.length > 15 && (
-              <ReferenceLine
-                x={chartData[14]?.shortDate}
-                stroke="rgba(212,162,76,0.15)"
-                strokeDasharray="4 4"
-                label=""
-              />
-            )}
-
-            {/* Mean line */}
-            <Area
-              type="monotone"
-              dataKey="mean"
-              stroke="#4fb8b0"
-              strokeWidth={1.5}
-              fill={`url(#grad-7d-${code})`}
-              dot={false}
-              activeDot={{
-                r: 4,
-                stroke: "#4fb8b0",
-                strokeWidth: 2,
-                fill: "var(--bg-primary)",
-              }}
-              isAnimationActive={true}
-              animationDuration={1500}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
-      </div>
-
-      {/* Zone legend */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        {zoneInfo.map((z) => (
-          <div
-            key={z.label}
-            className={`${z.bg} ${z.border} border rounded-lg px-3 py-2.5`}
-          >
-            <div className="flex items-center gap-2 mb-0.5">
-              <span className={`w-2 h-0.5 ${z.barColor} rounded-full`} />
-              <span className={`text-xs font-semibold ${z.color}`}>{z.label}</span>
-            </div>
-            <p className="text-[10px] text-slate-500">
-              {z.style} · {z.desc}
-            </p>
-          </div>
-        ))}
-      </div>
-      </div>
-
-      {/* Day-by-day prediction cards — rendered OUTSIDE the chart card */}
+      {/* Day-by-day calendar */}
       <PredictionCalendar forecast={forecast} countryCode={code} />
-    </>
+    </div>
   );
 }

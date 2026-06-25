@@ -70,72 +70,49 @@ const sources = [
 
 export default function DataSources() {
   return (
-    <section id="sources" className="py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-14">
-          <p className="text-xs font-semibold tracking-[0.2em] uppercase text-cyan-400/70 mb-3">
-            Transparent Sourcing
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-100">
-            Data Sources
-          </h2>
-          <p className="mt-3 text-slate-400 max-w-xl mx-auto text-sm leading-relaxed">
-            Every prediction is grounded in reference-grade measurements from
-            government agencies and open data platforms.
-          </p>
-        </div>
-
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div id="sources">
+      {/* Grid */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
           {sources.map((src) => (
             <a
               key={src.name}
               href={src.url}
               target="_blank"
               rel="noopener noreferrer"
-              className={`group glass-card p-5 flex items-start gap-4 hover:border-white/[0.12] transition-all duration-300`}
+              className="card hover-lift"
+              style={{ display: "flex", alignItems: "flex-start", gap: "16px", padding: "24px", textDecoration: "none" }}
             >
               {/* Icon */}
-              <div
-                className={`w-11 h-11 rounded-xl bg-gradient-to-br ${src.color} border ${src.borderColor} flex items-center justify-center shrink-0`}
-              >
-                <span className="text-lg">{src.flag}</span>
+              <div style={{
+                width: "40px", height: "40px", borderRadius: "8px", flexShrink: 0,
+                background: "var(--surface-raised)", border: "1px solid var(--border)",
+                display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px"
+              }}>
+                {src.flag}
               </div>
 
               {/* Text */}
-              <div className="min-w-0">
-                <div className="flex items-baseline gap-2">
-                  <h3 className="text-sm font-semibold text-slate-200 group-hover:text-white transition-colors">
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "6px" }}>
+                  <h3 style={{ fontSize: "14px", fontWeight: 600, color: "var(--text-1)", fontFamily: "'Inter', sans-serif", margin: 0 }}>
                     {src.name}
                   </h3>
-                  <span className="text-[10px] text-slate-500 font-medium">
+                  <span style={{ fontSize: "10px", fontWeight: 500, color: "var(--text-3)", fontFamily: "'Inter', sans-serif" }}>
                     {src.country}
                   </span>
                 </div>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                <p style={{ fontSize: "12px", color: "var(--text-2)", lineHeight: 1.6, fontFamily: "'Inter', sans-serif", margin: 0 }}>
                   {src.description}
                 </p>
               </div>
 
               {/* External link icon */}
-              <svg
-                className="w-3.5 h-3.5 text-slate-600 group-hover:text-slate-400 transition-colors shrink-0 mt-0.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                />
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-3)" strokeWidth="2" style={{ marginTop: "4px", flexShrink: 0 }}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
             </a>
           ))}
-        </div>
       </div>
-    </section>
+    </div>
   );
 }

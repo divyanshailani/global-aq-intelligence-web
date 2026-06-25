@@ -36,16 +36,25 @@ function CustomBarTooltip({
   if (!active || !payload || !payload.length) return null;
   const d = payload[0].payload;
   return (
-    <div className="glass-card-static p-3 !rounded-lg text-xs min-w-[140px]">
-      <p className="text-slate-300 font-semibold mb-1.5">{d.name}</p>
-      <div className="space-y-1">
-        <div className="flex justify-between">
-          <span className="text-slate-500">Accuracy</span>
-          <span className="text-slate-200 font-bold">{d.accuracy_percentage.toFixed(1)}%</span>
+    <div style={{
+      background: "var(--surface)",
+      border: "1px solid var(--border)",
+      borderRadius: "8px",
+      padding: "12px",
+      minWidth: "140px",
+      boxShadow: "0 4px 12px rgba(0,0,0,0.05)"
+    }}>
+      <p style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-1)", marginBottom: "8px", fontFamily: "'Inter', sans-serif" }}>
+        {d.name}
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px" }}>
+          <span style={{ fontSize: "11px", color: "var(--text-3)", fontFamily: "'Inter', sans-serif" }}>Accuracy</span>
+          <span style={{ fontSize: "12px", fontWeight: 600, color: "var(--text-1)", fontFamily: "'Inter', sans-serif" }}>{d.accuracy_percentage.toFixed(1)}%</span>
         </div>
-        <div className="flex justify-between">
-          <span className="text-slate-500">MAE</span>
-          <span className="text-slate-200 font-bold">{d.mae.toFixed(2)} µg/m³</span>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px" }}>
+          <span style={{ fontSize: "11px", color: "var(--text-3)", fontFamily: "'Inter', sans-serif" }}>MAE</span>
+          <span style={{ fontSize: "12px", fontWeight: 600, color: "var(--text-1)", fontFamily: "'Inter', sans-serif" }}>{d.mae.toFixed(2)} µg/m³</span>
         </div>
       </div>
     </div>
@@ -95,41 +104,30 @@ export default function AccuracyProof({
   ];
 
   return (
-    <section id="accuracy" className="py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-14">
-          <p className="text-xs font-semibold tracking-[0.2em] uppercase text-emerald-400/70 mb-3">
-            Model Validation
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-100">
-            Accuracy Proof
-          </h2>
-          <p className="mt-3 text-slate-400 max-w-xl mx-auto text-sm leading-relaxed">
-            Rigorous evaluation metrics and data leakage prevention — because
-            trustworthy forecasts demand transparent validation.
-          </p>
-          <div className="mt-6 flex justify-center">
-            {live_validation_count === 0 ? (
-              <span className="text-xs text-slate-500/70 bg-white/5 px-3 py-1.5 rounded-full border border-white/5">
-                Pending Live Validation (0 Days) - Displaying strict temporal holdout backtest.
-              </span>
-            ) : (
-              <div className="flex items-center gap-2 bg-emerald-500/10 px-4 py-2 rounded-full border border-emerald-500/20 text-emerald-400 text-sm font-bold shadow-[0_0_15px_rgba(16,185,129,0.1)]">
-                <div className="h-2 w-2 rounded-full animate-pulse bg-green-500"></div>
-                Live Validated on {live_validation_count} days of real-world production data.
-              </div>
-            )}
+    <div id="accuracy">
+      {/* Validation banner */}
+      <div style={{ marginBottom: "24px" }}>
+        {live_validation_count === 0 ? (
+          <span style={{ fontSize: "11px", color: "var(--text-3)", background: "var(--surface-raised)", border: "1px solid var(--border)", borderRadius: "999px", padding: "4px 12px", fontFamily: "'Inter', sans-serif" }}>
+            Pending Live Validation (0 Days) · Displaying strict temporal holdout backtest
+          </span>
+        ) : (
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", background: "rgba(76,175,130,0.08)", border: "1px solid rgba(76,175,130,0.18)", borderRadius: "999px", padding: "4px 12px" }}>
+            <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--aqi-good)", animation: "pulse-dot 2s ease-in-out infinite" }} />
+            <span style={{ fontSize: "11px", color: "var(--aqi-good)", fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>
+              Live Validated · {live_validation_count} days of real-world production data
+            </span>
           </div>
-        </div>
+        )}
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))", gap: "32px" }}>
           {/* Left — R² Chart */}
-          <div className="glass-card-static p-6">
-            <h3 className="text-sm font-semibold text-slate-300 mb-1">
+          <div className="card" style={{ padding: "32px" }}>
+            <h3 style={{ fontSize: "15px", fontWeight: 600, color: "var(--text-1)", fontFamily: "'Inter', sans-serif", marginBottom: "4px" }}>
               Test R² Score by Country
             </h3>
-            <p className="text-xs text-slate-500 mb-6">
+            <p style={{ fontSize: "12px", color: "var(--text-3)", fontFamily: "'Inter', sans-serif", marginBottom: "32px" }}>
               Higher is better (1.0 = perfect). Evaluated on held-out future data.
             </p>
 
@@ -149,7 +147,7 @@ export default function AccuracyProof({
                     type="number"
                     domain={[0, 1]}
                     tick={{ fontSize: 10, fill: "#64748b" }}
-                    axisLine={{ stroke: "rgba(148,163,184,0.1)" }}
+                    axisLine={{ stroke: "var(--border)" }}
                     tickLine={false}
                   />
                   <YAxis
@@ -181,19 +179,20 @@ export default function AccuracyProof({
             </div>
 
             {/* Metric pills */}
-            <div className="mt-6 grid grid-cols-2 gap-2">
+            <div style={{ marginTop: "32px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
               {chartData.map((d) => (
                 <div
                   key={d.country}
-                  className="flex items-center gap-2 bg-white/[0.02] rounded-lg px-3 py-2 border border-white/[0.04]"
+                  className="hover-lift cursor-pointer"
+                  style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px", borderRadius: "8px", background: "var(--surface-raised)", border: "1px solid var(--border)" }}
                 >
-                  <span className="text-base">{d.flag}</span>
-                  <div className="min-w-0">
-                    <p className="text-[10px] text-slate-500 truncate">{d.name}</p>
-                    <p
-                      className={`text-xs font-bold ${countryColors[d.country]?.text ?? "text-slate-300"}`}
-                    >
-                      Accuracy {d.accuracy_percentage.toFixed(1)}% · MAE {d.mae.toFixed(2)}
+                  <span style={{ fontSize: "18px" }}>{d.flag}</span>
+                  <div style={{ minWidth: 0 }}>
+                    <p style={{ fontSize: "11px", color: "var(--text-3)", fontFamily: "'Inter', sans-serif", margin: "0 0 2px 0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      {d.name}
+                    </p>
+                    <p style={{ fontSize: "12px", fontWeight: 600, color: "var(--text-1)", fontFamily: "'Inter', sans-serif", margin: 0 }}>
+                      Acc {d.accuracy_percentage.toFixed(1)}% · MAE {d.mae.toFixed(2)}
                     </p>
                   </div>
                 </div>
@@ -202,29 +201,26 @@ export default function AccuracyProof({
           </div>
 
           {/* Right — Leak Prevention */}
-          <div className="glass-card-static p-6">
-            <h3 className="text-sm font-semibold text-slate-300 mb-1">
+          <div className="card" style={{ padding: "32px" }}>
+            <h3 style={{ fontSize: "15px", fontWeight: 600, color: "var(--text-1)", fontFamily: "'Inter', sans-serif", marginBottom: "4px" }}>
               How We Prevent Data Leakage
             </h3>
-            <p className="text-xs text-slate-500 mb-6">
+            <p style={{ fontSize: "12px", color: "var(--text-3)", fontFamily: "'Inter', sans-serif", marginBottom: "32px" }}>
               Every step is designed to ensure the model can&apos;t cheat — these
               metrics reflect real-world performance.
             </p>
 
-            <div className="space-y-4">
+            <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
               {leakPreventionSteps.map((step, i) => (
-                <div
-                  key={i}
-                  className="flex gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-white/[0.08] transition-colors duration-200"
-                >
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500/10 to-cyan-500/10 border border-emerald-500/15 flex items-center justify-center shrink-0">
-                    <span className="text-lg">{step.icon}</span>
+                <div key={i} style={{ display: "flex", gap: "16px" }}>
+                  <div style={{ width: "32px", height: "32px", borderRadius: "6px", flexShrink: 0, background: "var(--surface-raised)", border: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px" }}>
+                    {step.icon}
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-slate-200 mb-0.5">
+                    <h4 style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-1)", fontFamily: "'Inter', sans-serif", marginBottom: "4px" }}>
                       {step.title}
                     </h4>
-                    <p className="text-xs text-slate-500 leading-relaxed">
+                    <p style={{ fontSize: "12px", color: "var(--text-2)", lineHeight: 1.6, fontFamily: "'Inter', sans-serif", margin: 0 }}>
                       {step.desc}
                     </p>
                   </div>
@@ -233,40 +229,27 @@ export default function AccuracyProof({
             </div>
 
             {/* Confidence explanation */}
-            <div className="mt-6 p-4 rounded-xl bg-gradient-to-br from-cyan-500/[0.04] to-violet-500/[0.04] border border-cyan-500/10">
-              <h4 className="text-xs font-semibold text-cyan-400 mb-3 uppercase tracking-wider">
+            <div style={{ marginTop: "32px", padding: "20px", borderRadius: "8px", background: "var(--surface-raised)", border: "1px solid var(--border)" }}>
+              <h4 style={{ fontSize: "11px", fontWeight: 600, color: "var(--text-3)", fontFamily: "'Inter', sans-serif", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "16px" }}>
                 Confidence Horizon Decay
               </h4>
-              <div className="space-y-2 text-xs">
-                <div className="flex gap-2">
-                  <span className="w-14 text-emerald-400 font-semibold shrink-0">
-                    7-Day
-                  </span>
-                  <span className="text-slate-400">
-                    {accuracy.confidence_explanation["7_day"]}
-                  </span>
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px", fontSize: "12px", fontFamily: "'Inter', sans-serif" }}>
+                <div style={{ display: "flex", gap: "16px" }}>
+                  <span style={{ width: "48px", color: "var(--aqi-good)", fontWeight: 600, flexShrink: 0 }}>7-Day</span>
+                  <span style={{ color: "var(--text-2)" }}>{accuracy.confidence_explanation["7_day"]}</span>
                 </div>
-                <div className="flex gap-2">
-                  <span className="w-14 text-amber-400 font-semibold shrink-0">
-                    15-Day
-                  </span>
-                  <span className="text-slate-400">
-                    {accuracy.confidence_explanation["15_day"]}
-                  </span>
+                <div style={{ display: "flex", gap: "16px" }}>
+                  <span style={{ width: "48px", color: "var(--aqi-moderate)", fontWeight: 600, flexShrink: 0 }}>15-Day</span>
+                  <span style={{ color: "var(--text-2)" }}>{accuracy.confidence_explanation["15_day"]}</span>
                 </div>
-                <div className="flex gap-2">
-                  <span className="w-14 text-rose-400 font-semibold shrink-0">
-                    30-Day
-                  </span>
-                  <span className="text-slate-400">
-                    {accuracy.confidence_explanation["30_day"]}
-                  </span>
+                <div style={{ display: "flex", gap: "16px" }}>
+                  <span style={{ width: "48px", color: "var(--aqi-unhealthy)", fontWeight: 600, flexShrink: 0 }}>30-Day</span>
+                  <span style={{ color: "var(--text-2)" }}>{accuracy.confidence_explanation["30_day"]}</span>
                 </div>
               </div>
             </div>
-          </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
