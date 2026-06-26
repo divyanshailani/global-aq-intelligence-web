@@ -65,11 +65,18 @@ function Navbar() {
       transition: "background 0.25s, border-color 0.25s, backdrop-filter 0.25s",
       display: "flex", alignItems: "center", padding: "0 56px",
     }}>
-      <span style={{ fontSize: "13px", fontWeight: 500, color: "var(--text-1)", fontFamily: "'Inter', sans-serif", letterSpacing: "-0.01em" }}>
-        Global AQ Intelligence
-      </span>
+      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--text-1)" }}>
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+        <span style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-1)", fontFamily: "'Inter', sans-serif", letterSpacing: "-0.01em" }}>
+          Global AQ Intelligence
+        </span>
+      </div>
       <div style={{ flex: 1 }} />
-      <nav className="resp-nav-links" style={{ display: "flex", gap: "28px" }}>
+      <nav className="resp-nav-links" style={{ display: "flex", gap: "28px", alignItems: "center" }}>
         {(["Forecasts", "Validation", "Data Sources"] as const).map(label => (
           <a key={label} href={`#${label.toLowerCase().replace(" ", "-")}`}
             style={{ fontSize: "13px", color: "var(--text-3)", fontFamily: "'Inter', sans-serif", textDecoration: "none", transition: "color 0.15s" }}
@@ -87,8 +94,10 @@ function Navbar() {
           GitHub ↗
         </a>
         <div style={{ width: "1px", height: "14px", background: "var(--border)", margin: "auto 0" }} />
-        <ThemeToggle />
       </nav>
+      <div style={{ marginLeft: "28px" }} className="resp-theme-toggle">
+        <ThemeToggle />
+      </div>
     </header>
   );
 }
@@ -164,9 +173,7 @@ export default function Home() {
     const next = selectedCountry === code ? null : code;
     setSelectedCountry(next);
     setForecastKey(k => k + 1);
-    if (next) {
-      setTimeout(() => forecastRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 60);
-    }
+    // Removed auto-scroll on mobile to avoid jumping to the bottom/top weirdly
   }
 
   const lastRun = useMemo(() => accuracy?.last_pipeline_run || accuracy?.generated_at, [accuracy]);
@@ -223,19 +230,30 @@ export default function Home() {
             const meta = modelMeta.countries[code];
             if (!meta || !pred) return null;
             return (
-              <CountryCard
-                key={code} code={code} meta={meta} forecast={pred.forecast}
-                onClick={() => handleSelect(code)}
-                isSelected={selectedCountry === code}
-                stacked={false}
-              />
+              <React.Fragment key={code}>
+                <CountryCard
+                  code={code} meta={meta} forecast={pred.forecast}
+                  onClick={() => handleSelect(code)}
+                  isSelected={selectedCountry === code}
+                  stacked={false}
+                />
+                {selectedCountry === code && (
+                  <div className="resp-show-mobile animate-fade-in" style={{ gridColumn: "1 / -1", marginTop: "8px", marginBottom: "16px" }}>
+                    <ForecastDetail
+                      code={selectedCountry}
+                      meta={meta}
+                      forecast={pred.forecast}
+                    />
+                  </div>
+                )}
+              </React.Fragment>
             );
           })}
         </div>
 
-        {/* ── EXPANDED FORECAST (Below) ── */}
+        {/* ── EXPANDED FORECAST (Below for Desktop) ── */}
         {selectedCountry && predictions[selectedCountry] && (
-          <div key={forecastKey} className="animate-fade-in" style={{ marginTop: "32px", borderTop: "1px solid var(--border)", paddingTop: "32px" }}>
+          <div key={forecastKey} className="animate-fade-in resp-hide-mobile" style={{ marginTop: "32px", borderTop: "1px solid var(--border)", paddingTop: "32px" }}>
             <ForecastDetail
               code={selectedCountry}
               meta={modelMeta.countries[selectedCountry]}

@@ -399,12 +399,20 @@ body {
 /* ============================================================
    RESPONSIVE UTILITIES
    ============================================================ */
+.resp-show-mobile { display: none !important; }
+
 @media (max-width: 768px) {
   .resp-px { padding-left: 16px !important; padding-right: 16px !important; }
-  .resp-py-hero { padding-top: 100px !important; padding-bottom: 40px !important; }
+  .resp-py-hero { padding-top: 16px !important; padding-bottom: 40px !important; }
+  .resp-py-footer { padding-top: 24px !important; padding-bottom: 32px !important; }
+  .resp-p-card { padding: 16px !important; }
+  .resp-p-cal { padding: 16px 12px !important; }
   .resp-py-sec { padding-top: 48px !important; padding-bottom: 64px !important; }
   
   .resp-nav-links { display: none !important; }
+  
+  .resp-show-mobile { display: block !important; }
+  .resp-hide-mobile { display: none !important; }
   
   .resp-grid-4, .resp-grid-3, .resp-grid-2 { 
     grid-template-columns: 1fr !important; 
@@ -438,6 +446,51 @@ body {
     flex-direction: column !important;
     align-items: flex-start !important;
     gap: 16px !important;
+  }
+  .resp-footer-right {
+    justify-content: flex-start !important;
+  }
+  .resp-footer-right-inner {
+    align-items: flex-start !important;
+  }
+  .resp-footer-center {
+    text-align: left !important;
+  }
+  
+  .resp-step-container {
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+  }
+  .resp-step-arrow {
+    display: none !important;
+  }
+  
+  .resp-grid-2-cols {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  .resp-flex-scroll {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 12px !important;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .resp-flex-scroll::-webkit-scrollbar {
+    height: 3px;
+  }
+  .resp-flex-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .resp-flex-scroll::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 99px;
+  }
+  .resp-flex-scroll > div {
+    flex: 0 0 140px;
+    scroll-snap-align: start;
   }
 }
 

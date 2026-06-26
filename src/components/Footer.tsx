@@ -4,39 +4,43 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="resp-px resp-py-sec" style={{ borderTop: "1px solid var(--border)", padding: "36px 56px", marginTop: "auto", background: "var(--bg)" }}>
+    <footer className="resp-px resp-py-footer" style={{ borderTop: "1px solid var(--border)", padding: "36px 56px", marginTop: "auto", background: "var(--bg)" }}>
       <div className="resp-footer" style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "24px" }}>
         
         {/* Left — Brand & Copy */}
         <div style={{ flex: 1, minWidth: "250px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
-            <span style={{ fontSize: "16px" }}>🌍</span>
+          <div className="resp-hide-mobile" style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--text-1)" }}>
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
             <span style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-1)", fontFamily: "'Inter', sans-serif", letterSpacing: "-0.01em" }}>
               Global AQ Intelligence
             </span>
           </div>
-          <p style={{ fontSize: "11px", color: "var(--text-3)", fontFamily: "'Inter', sans-serif" }}>
-            © 2026 Global AQ Intelligence. Data from EPA, CPCB, DEFRA, NSW EPA, OpenAQ.
+          <p style={{ fontSize: "11px", color: "var(--text-3)", fontFamily: "'Inter', sans-serif", margin: 0 }}>
+            © 2026 Global AQ Intelligence.<span className="resp-hide-mobile"> Data from EPA, CPCB, DEFRA, NSW EPA, OpenAQ.</span>
           </p>
         </div>
 
         {/* Center — Built by */}
-        <div className="resp-flex-col" style={{ textAlign: "center", flexShrink: 0 }}>
-          <p style={{ fontSize: "12px", color: "var(--text-2)", fontFamily: "'Inter', sans-serif", marginBottom: "2px" }}>
+        <div className="resp-flex-col resp-footer-center" style={{ textAlign: "center", flexShrink: 0 }}>
+          <p style={{ fontSize: "12px", color: "var(--text-2)", fontFamily: "'Inter', sans-serif", margin: "0 0 2px 0" }}>
             Built by{" "}
             <a href="https://github.com/divyanshailani" target="_blank" rel="noopener noreferrer" style={{ color: "var(--text-1)", fontWeight: 500, textDecoration: "none" }}>
               Divyansh Ailani
             </a>
           </p>
-          <p style={{ fontSize: "11px", color: "var(--text-3)", fontFamily: "'Inter', sans-serif" }}>
+          <p className="resp-hide-mobile" style={{ fontSize: "11px", color: "var(--text-3)", fontFamily: "'Inter', sans-serif", margin: 0 }}>
             Simulation Architect · First-Principles Engineering
           </p>
         </div>
 
         {/* Right — Version & Link */}
-        <div style={{ flex: 1, minWidth: "250px", display: "flex", justifyContent: "flex-end" }}>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
-            <p style={{ fontSize: "10px", color: "var(--text-3)", fontFamily: "'JetBrains Mono', monospace", background: "var(--surface-raised)", padding: "4px 8px", borderRadius: "4px", border: "1px solid var(--border)" }}>
+        <div className="resp-footer-right" style={{ flex: 1, minWidth: "250px", display: "flex", justifyContent: "flex-end" }}>
+          <div className="resp-footer-right-inner" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
+            <p className="resp-hide-mobile" style={{ fontSize: "10px", color: "var(--text-3)", fontFamily: "'JetBrains Mono', monospace", background: "var(--surface-raised)", padding: "4px 8px", borderRadius: "4px", border: "1px solid var(--border)", margin: 0 }}>
               V11 3D Atmospheric Ensemble
             </p>
             <a href="https://github.com/divyanshailani" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "var(--text-2)", textDecoration: "none", fontWeight: 500, fontFamily: "'Inter', sans-serif" }}>

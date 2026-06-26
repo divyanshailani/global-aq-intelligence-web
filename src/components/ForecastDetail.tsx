@@ -81,9 +81,47 @@ export default function ForecastDetail({ code, meta, forecast }: ForecastDetailP
     }, 100);
   }, [code]);
 
+  const shiftedForecast = useMemo(() => {
+    if (!forecast || forecast.length === 0) return [];
+    
+    const timezones: Record<string, string> = {
+      IN: "Asia/Kolkata",
+      AU: "Australia/Sydney",
+      US: "America/New_York",
+      GB: "Europe/London",
+      UK: "Europe/London",
+    };
+    const tz = timezones[code] || "UTC";
+    
+    // Get today's date in target timezone
+    const now = new Date();
+    const parts = new Intl.DateTimeFormat("en-US", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now);
+    const m = parts.find(p => p.type === "month")?.value;
+    const d = parts.find(p => p.type === "day")?.value;
+    const y = parts.find(p => p.type === "year")?.value;
+    const todayTz = new Date(`${y}-${m}-${d}T00:00:00Z`);
+
+    // Sort original forecast to maintain chronological order
+    const sortedOriginal = [...forecast].sort((a, b) => new Date(a.target_date).getTime() - new Date(b.target_date).getTime());
+    
+    // Create a mapping from old dates to new dynamic dates starting from today
+    const uniqueDates = Array.from(new Set(sortedOriginal.map(f => f.target_date)));
+    const dateMapping = new Map<string, string>();
+    uniqueDates.forEach((oldDate, i) => {
+      const newDate = new Date(todayTz.getTime() + i * 24 * 60 * 60 * 1000);
+      const newDateStr = newDate.toISOString().split('T')[0];
+      dateMapping.set(oldDate, newDateStr);
+    });
+
+    return sortedOriginal.map(f => ({
+      ...f,
+      target_date: dateMapping.get(f.target_date) || f.target_date
+    }));
+  }, [forecast, code]);
+
   const chartData = useMemo(() => {
     const dateMap = new Map<string, ForecastPoint>();
-    const sorted = [...forecast].sort(
+    const sorted = [...shiftedForecast].sort(
       (a, b) => new Date(a.target_date).getTime() - new Date(b.target_date).getTime()
     );
     for (const pt of sorted) {
@@ -168,7 +206,7 @@ export default function ForecastDetail({ code, meta, forecast }: ForecastDetailP
 
         <div style={{ padding: "24px" }}>
           {/* Stat pills */}
-          <div style={{
+          <div className="resp-grid-2-cols" style={{
             display: "grid", gridTemplateColumns: "repeat(4, 1fr)",
             gap: "10px", marginBottom: "24px",
           }}>
@@ -250,7 +288,7 @@ export default function ForecastDetail({ code, meta, forecast }: ForecastDetailP
       </div>
 
       {/* Day-by-day calendar */}
-      <PredictionCalendar forecast={forecast} countryCode={code} />
+      <PredictionCalendar forecast={shiftedForecast} countryCode={code} />
     </div>
   );
 }

@@ -71,6 +71,7 @@ export default function AccuracyProof({
     ([code, metrics]) => ({
       country: code,
       name: modelMeta.countries[code]?.name ?? code,
+      alias: code === "GB" ? "UK" : code,
       flag: modelMeta.countries[code]?.flag ?? "",
       accuracy_percentage: metrics.accuracy_percentage,
       mae: metrics.mae,
@@ -108,9 +109,9 @@ export default function AccuracyProof({
       {/* Validation banner */}
       <div style={{ marginBottom: "24px" }}>
         {live_validation_count === 0 ? (
-          <span style={{ fontSize: "11px", color: "var(--text-3)", background: "var(--surface-raised)", border: "1px solid var(--border)", borderRadius: "999px", padding: "4px 12px", fontFamily: "'Inter', sans-serif" }}>
+          <div style={{ display: "inline-block", fontSize: "11px", color: "var(--text-3)", background: "var(--surface-raised)", border: "1px solid var(--border)", borderRadius: "999px", padding: "4px 12px", fontFamily: "'Inter', sans-serif" }}>
             Pending Live Validation (0 Days) · Displaying strict temporal holdout backtest
-          </span>
+          </div>
         ) : (
           <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", background: "rgba(76,175,130,0.08)", border: "1px solid rgba(76,175,130,0.18)", borderRadius: "999px", padding: "4px 12px" }}>
             <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--aqi-good)", animation: "pulse-dot 2s ease-in-out infinite" }} />
@@ -123,12 +124,12 @@ export default function AccuracyProof({
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 400px), 1fr))", gap: "32px" }}>
           {/* Left — R² Chart */}
-          <div className="card" style={{ padding: "32px" }}>
+          <div className="card resp-p-card" style={{ padding: "32px" }}>
             <h3 style={{ fontSize: "15px", fontWeight: 600, color: "var(--text-1)", fontFamily: "'Inter', sans-serif", marginBottom: "4px" }}>
-              Test R² Score by Country
+              Forecast Accuracy by Country
             </h3>
             <p style={{ fontSize: "12px", color: "var(--text-3)", fontFamily: "'Inter', sans-serif", marginBottom: "32px" }}>
-              Higher is better (1.0 = perfect). Evaluated on held-out future data.
+              Higher is better (100% = perfect). Evaluated on held-out future data.
             </p>
 
             <div className="h-64">
@@ -145,18 +146,18 @@ export default function AccuracyProof({
                   />
                   <XAxis
                     type="number"
-                    domain={[0, 1]}
+                    domain={[0, 100]}
                     tick={{ fontSize: 10, fill: "#64748b" }}
                     axisLine={{ stroke: "var(--border)" }}
                     tickLine={false}
                   />
                   <YAxis
                     type="category"
-                    dataKey="name"
+                    dataKey="alias"
                     tick={{ fontSize: 11, fill: "#94a3b8" }}
                     axisLine={false}
                     tickLine={false}
-                    width={100}
+                    width={25}
                   />
                   <Tooltip content={<CustomBarTooltip />} cursor={false} />
                   <Bar
@@ -201,7 +202,7 @@ export default function AccuracyProof({
           </div>
 
           {/* Right — Leak Prevention */}
-          <div className="card" style={{ padding: "32px" }}>
+          <div className="card resp-p-card" style={{ padding: "32px" }}>
             <h3 style={{ fontSize: "15px", fontWeight: 600, color: "var(--text-1)", fontFamily: "'Inter', sans-serif", marginBottom: "4px" }}>
               How We Prevent Data Leakage
             </h3>

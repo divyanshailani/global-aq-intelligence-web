@@ -9,6 +9,14 @@ interface Props {
   countryCode: string;
 }
 
+const timezones: Record<string, string> = {
+  IN: "Asia/Kolkata",
+  AU: "Australia/Sydney",
+  US: "America/New_York",
+  GB: "Europe/London",
+  UK: "Europe/London",
+};
+
 interface DayData {
   dateStr: string;
   pm25: number;
@@ -39,7 +47,7 @@ function zoneStyle(zone: DayData["zone"]): React.CSSProperties {
   return { color: "var(--text-3)", background: "var(--surface-raised)", border: "1px solid var(--border)" };
 }
 
-export default function PredictionCalendar({ forecast }: Props) {
+export default function PredictionCalendar({ forecast, countryCode }: Props) {
   const days: DayData[] = useMemo(() => {
     const dateMap = new Map<string, ForecastPoint>();
     const sorted = [...forecast].sort(
@@ -50,11 +58,21 @@ export default function PredictionCalendar({ forecast }: Props) {
       if (!existing || pt.stations >= existing.stations) dateMap.set(pt.target_date, pt);
     }
 
+    const tz = timezones[countryCode] || "UTC";
     const now = new Date();
-    const pad = (n: number) => n.toString().padStart(2, "0");
-    const todayStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
-    const tmw = new Date(now); tmw.setDate(tmw.getDate() + 1);
-    const tmwStr = `${tmw.getFullYear()}-${pad(tmw.getMonth() + 1)}-${pad(tmw.getDate())}`;
+    const formatter = new Intl.DateTimeFormat("en-US", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit" });
+    
+    const getTzDateStr = (date: Date) => {
+      const parts = formatter.formatToParts(date);
+      const m = parts.find(p => p.type === "month")?.value;
+      const d = parts.find(p => p.type === "day")?.value;
+      const y = parts.find(p => p.type === "year")?.value;
+      return `${y}-${m}-${d}`;
+    };
+
+    const todayStr = getTzDateStr(now);
+    const tmw = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    const tmwStr = getTzDateStr(tmw);
 
     return Array.from(dateMap.values())
       .sort((a, b) => new Date(a.target_date).getTime() - new Date(b.target_date).getTime())
@@ -102,8 +120,8 @@ export default function PredictionCalendar({ forecast }: Props) {
       </div>
 
       {/* Calendar Grid */}
-      <div style={{ padding: "24px 32px", background: "var(--surface)" }}>
-        <div style={{ 
+      <div className="resp-p-cal" style={{ padding: "24px 32px", background: "var(--surface)" }}>
+        <div className="resp-flex-scroll" style={{ 
           display: "grid", 
           gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", 
           gap: "16px" 
