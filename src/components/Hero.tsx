@@ -40,7 +40,7 @@ function StatItem({ v, l, i }: { v: string, l: string, i: number }) {
   }
 
   return (
-    <div style={{
+    <div className="resp-stat-item" style={{
       padding: "14px 24px",
       borderRight: i < 3 ? "1px solid var(--border)" : "none",
       textAlign: "center",
@@ -102,7 +102,7 @@ export default function Hero({ lastPipelineRun }: { lastPipelineRun?: string }) 
   }
 
   return (
-    <section style={{ padding: "56px 56px 64px", borderBottom: "1px solid var(--border)", position: "relative", overflow: "hidden" }}>
+    <section className="resp-px resp-py-hero" style={{ padding: "56px 56px 64px", borderBottom: "1px solid var(--border)", position: "relative", overflow: "hidden" }}>
 
       {/* Decorative Background Element: Left (Particulate Cluster) */}
       <div style={{ position: "absolute", left: "-5%", top: "5%", zIndex: 0, opacity: 0.6, animation: "spin 90s linear infinite", pointerEvents: "none" }}>
@@ -182,7 +182,7 @@ export default function Hero({ lastPipelineRun }: { lastPipelineRun?: string }) 
         </p>
 
         {/* Inline stat bar */}
-        <div className="animate-fade-in" style={{
+        <div className="animate-fade-in resp-stat-bar" style={{
           display: "inline-flex",
           background: "var(--surface)", border: "1px solid var(--border)",
           borderRadius: "8px", overflow: "hidden",

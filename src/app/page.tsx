@@ -57,7 +57,7 @@ function Navbar() {
     return () => window.removeEventListener("scroll", h);
   }, []);
   return (
-    <header style={{
+    <header className="resp-px" style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, height: "50px",
       background: scrolled ? "var(--nav-bg)" : "transparent",
       backdropFilter: scrolled ? "blur(16px)" : "none",
@@ -69,7 +69,7 @@ function Navbar() {
         Global AQ Intelligence
       </span>
       <div style={{ flex: 1 }} />
-      <nav style={{ display: "flex", gap: "28px" }}>
+      <nav className="resp-nav-links" style={{ display: "flex", gap: "28px" }}>
         {(["Forecasts", "Validation", "Data Sources"] as const).map(label => (
           <a key={label} href={`#${label.toLowerCase().replace(" ", "-")}`}
             style={{ fontSize: "13px", color: "var(--text-3)", fontFamily: "'Inter', sans-serif", textDecoration: "none", transition: "color 0.15s" }}
@@ -202,7 +202,7 @@ export default function Home() {
       </div>
 
       {/* ── FORECASTS SECTION ── */}
-      <section id="forecasts" ref={forecastRef} style={{ padding: "64px 56px 80px" }}>
+      <section id="forecasts" ref={forecastRef} className="resp-px resp-py-sec" style={{ padding: "64px 56px 80px" }}>
 
         <div style={{ marginBottom: "28px" }}>
           <p style={{ fontSize: "10px", fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-3)", fontFamily: "'Inter', sans-serif", marginBottom: "4px" }}>
@@ -246,7 +246,7 @@ export default function Home() {
       </section>
 
       {/* ── MODEL VALIDATION ── */}
-      <section id="validation" style={{ padding: "64px 56px 80px", borderTop: "1px solid var(--border)" }}>
+      <section id="validation" className="resp-px resp-py-sec" style={{ padding: "64px 56px 80px", borderTop: "1px solid var(--border)" }}>
         <SectionHead
           eyebrow="Model Validation"
           title="How the models work"
@@ -254,7 +254,7 @@ export default function Home() {
         />
 
         {/* 4 explanation cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px", marginBottom: "36px" }}>
+        <div className="resp-grid-4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px", marginBottom: "36px" }}>
           <ModelCard title="Temporal Split"
             desc="Test data is always from a future period never seen during training."
             icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22V12M12 12L4 7M12 12L20 7M4 7V17L12 22M20 7V17L12 22"/></svg>}
@@ -278,7 +278,7 @@ export default function Home() {
       </section>
 
       {/* ── DATA SOURCES ── */}
-      <section id="data-sources" style={{ padding: "64px 56px 80px", borderTop: "1px solid var(--border)" }}>
+      <section id="data-sources" className="resp-px resp-py-sec" style={{ padding: "64px 56px 80px", borderTop: "1px solid var(--border)" }}>
         <SectionHead
           eyebrow="Transparent Sourcing"
           title="Data Sources"

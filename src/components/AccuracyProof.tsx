@@ -121,7 +121,7 @@ export default function AccuracyProof({
         )}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))", gap: "32px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 400px), 1fr))", gap: "32px" }}>
           {/* Left — R² Chart */}
           <div className="card" style={{ padding: "32px" }}>
             <h3 style={{ fontSize: "15px", fontWeight: 600, color: "var(--text-1)", fontFamily: "'Inter', sans-serif", marginBottom: "4px" }}>
@@ -179,7 +179,7 @@ export default function AccuracyProof({
             </div>
 
             {/* Metric pills */}
-            <div style={{ marginTop: "32px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+            <div className="resp-grid-2" style={{ marginTop: "32px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
               {chartData.map((d) => (
                 <div
                   key={d.country}

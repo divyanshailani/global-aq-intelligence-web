@@ -4,8 +4,8 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer style={{ borderTop: "1px solid var(--border)", padding: "36px 56px", marginTop: "auto", background: "var(--bg)" }}>
-      <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "24px" }}>
+    <footer className="resp-px resp-py-sec" style={{ borderTop: "1px solid var(--border)", padding: "36px 56px", marginTop: "auto", background: "var(--bg)" }}>
+      <div className="resp-footer" style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "24px" }}>
         
         {/* Left — Brand & Copy */}
         <div style={{ flex: 1, minWidth: "250px" }}>
@@ -21,7 +21,7 @@ export default function Footer() {
         </div>
 
         {/* Center — Built by */}
-        <div style={{ textAlign: "center", flexShrink: 0 }}>
+        <div className="resp-flex-col" style={{ textAlign: "center", flexShrink: 0 }}>
           <p style={{ fontSize: "12px", color: "var(--text-2)", fontFamily: "'Inter', sans-serif", marginBottom: "2px" }}>
             Built by{" "}
             <a href="https://github.com/divyanshailani" target="_blank" rel="noopener noreferrer" style={{ color: "var(--text-1)", fontWeight: 500, textDecoration: "none" }}>

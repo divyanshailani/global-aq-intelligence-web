@@ -72,7 +72,7 @@ export default function DataSources() {
   return (
     <div id="sources">
       {/* Grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))", gap: "24px" }}>
           {sources.map((src) => (
             <a
               key={src.name}
