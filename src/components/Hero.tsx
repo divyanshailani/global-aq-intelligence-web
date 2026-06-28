@@ -93,13 +93,16 @@ function StepCard({ n, icon, title, desc, delay }: { n: string; icon: React.Reac
 }
 
 export default function Hero({ lastPipelineRun }: { lastPipelineRun?: string }) {
-  let isStale = false;
-  let formattedDate = "";
-  if (lastPipelineRun) {
-    const d = new Date(lastPipelineRun);
-    formattedDate = d.toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
-    isStale = (Date.now() - d.getTime()) > 86400000;
-  }
+  const [formattedDate, setFormattedDate] = useState("");
+  const [isStale, setIsStale] = useState(false);
+
+  useEffect(() => {
+    if (lastPipelineRun) {
+      const d = new Date(lastPipelineRun);
+      setFormattedDate(d.toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }));
+      setIsStale((Date.now() - d.getTime()) > 86400000);
+    }
+  }, [lastPipelineRun]);
 
   return (
     <section className="resp-px resp-py-hero" style={{ padding: "56px 56px 64px", borderBottom: "1px solid var(--border)", position: "relative", overflow: "hidden" }}>
@@ -138,7 +141,7 @@ export default function Hero({ lastPipelineRun }: { lastPipelineRun?: string }) 
       <div style={{ maxWidth: "660px", margin: "0 auto", textAlign: "center", marginBottom: "56px", position: "relative", zIndex: 1 }}>
 
         {/* Status pill */}
-        {lastPipelineRun && (
+        {lastPipelineRun && formattedDate && (
           <div className="animate-fade-in" style={{
             display: "inline-flex", alignItems: "center", gap: "7px",
             background: "var(--surface)", border: "1px solid var(--border)",
