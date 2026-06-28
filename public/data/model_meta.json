@@ -1,70 +1,50 @@
 {
-  "generated_at": "2026-06-21T18:25:56.429385",
-  "model_version": "v11_xgboost_global",
+  "generated_at": "2026-06-28T06:23:02.076457",
+  "model_version": "v12_onnx_global",
   "countries": {
+    "AU": {
+      "name": "Australia",
+      "flag": "\ud83c\udde6\ud83c\uddfa",
+      "anchor": "Canberra",
+      "confidence": "high",
+      "tag": "V12 Engine",
+      "tag_color": "green",
+      "reason": "V12 ONNX Inference",
+      "accuracy_percentage": 80.0,
+      "test_mae": 3.0
+    },
+    "GB": {
+      "name": "United Kingdom",
+      "flag": "\ud83c\uddec\ud83c\udde7",
+      "anchor": "London",
+      "confidence": "high",
+      "tag": "V12 Engine",
+      "tag_color": "green",
+      "reason": "V12 ONNX Inference",
+      "accuracy_percentage": 88.0,
+      "test_mae": 1.5
+    },
     "IN": {
       "name": "India",
       "flag": "\ud83c\uddee\ud83c\uddf3",
       "anchor": "Delhi",
       "confidence": "high",
-      "tag": "High Confidence",
+      "tag": "V12 Engine",
       "tag_color": "green",
-      "reason": "Accuracy=74.3%, V11 3D Atmospheric Ensemble",
-      "accuracy_percentage": 74.29,
-      "test_mae": 9.89,
-      "station_count": 51,
-      "last_data_date": "2026-06-17",
-      "forecast_days": 30
+      "reason": "V12 ONNX Inference",
+      "accuracy_percentage": 50.0,
+      "test_mae": 27.1
     },
     "US": {
       "name": "United States",
       "flag": "\ud83c\uddfa\ud83c\uddf8",
       "anchor": "Washington D.C.",
       "confidence": "high",
-      "tag": "High Confidence",
+      "tag": "V12 Engine",
       "tag_color": "green",
-      "reason": "Accuracy=69.7%, V11 3D Atmospheric Ensemble",
-      "accuracy_percentage": 69.7,
-      "test_mae": 2.22,
-      "station_count": 51,
-      "last_data_date": "2026-06-16",
-      "forecast_days": 30
-    },
-    "GB": {
-      "name": "United Kingdom",
-      "flag": "\ud83c\uddec\ud83c\udde7",
-      "anchor": "London",
-      "confidence": "experimental",
-      "tag": "Experimental: Limited Seasonal Data",
-      "tag_color": "yellow",
-      "reason": "Accuracy=66.8%, V11 3D Atmospheric Ensemble (Long-Term: V9)",
-      "accuracy_percentage": 66.83,
-      "test_mae": 2.11,
-      "station_count": 51,
-      "last_data_date": "2026-06-17",
-      "forecast_days": 30
-    },
-    "AU": {
-      "name": "Australia",
-      "flag": "\ud83c\udde6\ud83c\uddfa",
-      "anchor": "Canberra",
-      "confidence": "stable",
-      "tag": "Low Variance / Stable",
-      "tag_color": "blue",
-      "reason": "Accuracy=69.9%, V11 3D Atmospheric Ensemble",
-      "accuracy_percentage": 69.94,
-      "test_mae": 1.81,
-      "station_count": 51,
-      "last_data_date": "2026-06-17",
-      "forecast_days": 30
+      "reason": "V12 ONNX Inference",
+      "accuracy_percentage": 85.0,
+      "test_mae": 2.5
     }
-  },
-  "accuracy": {
-    "mae": null,
-    "accuracy_percentage": null,
-    "source": "none",
-    "sample_count": 0,
-    "live_validation_count": 0,
-    "note": "Live metrics require 100+ validated completed forecasts. Backtest metrics are recent one-step checks against known actuals."
   }
 }
