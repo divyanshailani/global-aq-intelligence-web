@@ -11,10 +11,9 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
-import type { AccuracyJSON, ModelMetaJSON } from "@/types";
+import type { ModelMetaJSON } from "@/types";
 
 interface AccuracyProofProps {
-  accuracy: AccuracyJSON;
   modelMeta: ModelMetaJSON;
 }
 
@@ -62,19 +61,16 @@ function CustomBarTooltip({
 }
 
 export default function AccuracyProof({
-  accuracy,
   modelMeta,
 }: AccuracyProofProps) {
-  const { live_validation_count } = accuracy;
-
-  const chartData = Object.entries(accuracy.training_metrics).map(
-    ([code, metrics]) => ({
+  const chartData = Object.entries(modelMeta.countries).map(
+    ([code, meta]) => ({
       country: code,
-      name: modelMeta.countries[code]?.name ?? code,
+      name: meta.name,
       alias: code === "GB" ? "UK" : code,
-      flag: modelMeta.countries[code]?.flag ?? "",
-      accuracy_percentage: metrics.accuracy_percentage,
-      mae: metrics.mae,
+      flag: meta.flag,
+      accuracy_percentage: meta.accuracy_percentage ?? 0,
+      mae: meta.test_mae,
     })
   );
 
@@ -108,18 +104,9 @@ export default function AccuracyProof({
     <div id="accuracy">
       {/* Validation banner */}
       <div style={{ marginBottom: "24px" }}>
-        {live_validation_count === 0 ? (
-          <div style={{ display: "inline-block", fontSize: "11px", color: "var(--text-3)", background: "var(--surface-raised)", border: "1px solid var(--border)", borderRadius: "999px", padding: "4px 12px", fontFamily: "'Inter', sans-serif" }}>
-            Pending Live Validation (0 Days) · Displaying strict temporal holdout backtest
-          </div>
-        ) : (
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", background: "rgba(76,175,130,0.08)", border: "1px solid rgba(76,175,130,0.18)", borderRadius: "999px", padding: "4px 12px" }}>
-            <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--aqi-good)", animation: "pulse-dot 2s ease-in-out infinite" }} />
-            <span style={{ fontSize: "11px", color: "var(--aqi-good)", fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>
-              Live Validated · {live_validation_count} days of real-world production data
-            </span>
-          </div>
-        )}
+        <div style={{ display: "inline-block", fontSize: "11px", color: "var(--text-3)", background: "var(--surface-raised)", border: "1px solid var(--border)", borderRadius: "999px", padding: "4px 12px", fontFamily: "'Inter', sans-serif" }}>
+          Displaying strict temporal holdout backtest (V12 Pure Engine)
+        </div>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 400px), 1fr))", gap: "32px" }}>
@@ -237,15 +224,15 @@ export default function AccuracyProof({
               <div style={{ display: "flex", flexDirection: "column", gap: "12px", fontSize: "12px", fontFamily: "'Inter', sans-serif" }}>
                 <div style={{ display: "flex", gap: "16px" }}>
                   <span style={{ width: "48px", color: "var(--aqi-good)", fontWeight: 600, flexShrink: 0 }}>7-Day</span>
-                  <span style={{ color: "var(--text-2)" }}>{accuracy.confidence_explanation["7_day"]}</span>
+                  <span style={{ color: "var(--text-2)" }}>Direct Horizon Anchors + Weather-Weighted Interpolation. Highest accuracy.</span>
                 </div>
                 <div style={{ display: "flex", gap: "16px" }}>
                   <span style={{ width: "48px", color: "var(--aqi-moderate)", fontWeight: 600, flexShrink: 0 }}>15-Day</span>
-                  <span style={{ color: "var(--text-2)" }}>{accuracy.confidence_explanation["15_day"]}</span>
+                  <span style={{ color: "var(--text-2)" }}>Direct Horizon Anchors + Weather-Weighted Interpolation. Accuracy decreases.</span>
                 </div>
                 <div style={{ display: "flex", gap: "16px" }}>
                   <span style={{ width: "48px", color: "var(--aqi-unhealthy)", fontWeight: 600, flexShrink: 0 }}>30-Day</span>
-                  <span style={{ color: "var(--text-2)" }}>{accuracy.confidence_explanation["30_day"]}</span>
+                  <span style={{ color: "var(--text-2)" }}>Direct Horizon Anchors + Weather-Weighted Interpolation. Treat as directional trend only.</span>
                 </div>
               </div>
             </div>

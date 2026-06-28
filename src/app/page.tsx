@@ -143,7 +143,6 @@ function SectionHead({ eyebrow, title, subtitle, maxWidth = 560 }: { eyebrow: st
 // ── Main ─────────────────────────────────────────────────────────────────
 export default function Home() {
   const [modelMeta, setModelMeta] = useState<ModelMetaJSON | null>(null);
-  const [accuracy, setAccuracy] = useState<AccuracyJSON | null>(null);
   const [predictions, setPredictions] = useState<Record<string, PredictionJSON>>({});
   const [selectedCountry, setSelectedCountry] = useState<CountryCode | null>(null);
   const [forecastKey, setForecastKey] = useState(0);
@@ -153,15 +152,15 @@ export default function Home() {
   useEffect(() => {
     async function load() {
       try {
-        const [metaRes, accRes, inRes, usRes, gbRes, auRes] = await Promise.all([
-          fetch("/data/model_meta.json"), fetch("/data/accuracy.json"),
+        const [metaRes, inRes, usRes, gbRes, auRes] = await Promise.all([
+          fetch("/data/model_meta.json"),
           fetch("/data/predictions_IN.json"), fetch("/data/predictions_US.json"),
           fetch("/data/predictions_GB.json"), fetch("/data/predictions_AU.json"),
         ]);
-        const [meta, acc, inD, usD, gbD, auD] = await Promise.all([
-          metaRes.json(), accRes.json(), inRes.json(), usRes.json(), gbRes.json(), auRes.json(),
+        const [meta, inD, usD, gbD, auD] = await Promise.all([
+          metaRes.json(), inRes.json(), usRes.json(), gbRes.json(), auRes.json(),
         ]);
-        setModelMeta(meta); setAccuracy(acc);
+        setModelMeta(meta);
         setPredictions({ IN: inD, US: usD, GB: gbD, AU: auD });
       } catch (e) { console.error(e); }
       finally { setLoading(false); }
@@ -176,7 +175,7 @@ export default function Home() {
     // Removed auto-scroll on mobile to avoid jumping to the bottom/top weirdly
   }
 
-  const lastRun = useMemo(() => accuracy?.last_pipeline_run || accuracy?.generated_at, [accuracy]);
+  const lastRun = useMemo(() => modelMeta?.generated_at, [modelMeta]);
 
   if (loading) {
     return (
@@ -189,7 +188,7 @@ export default function Home() {
       </div>
     );
   }
-  if (!modelMeta || !accuracy) {
+  if (!modelMeta) {
     return (
       <div style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <p style={{ fontSize: "13px", color: "var(--aqi-unhealthy)", fontFamily: "'Inter', sans-serif" }}>Failed to load data.</p>
@@ -292,7 +291,7 @@ export default function Home() {
         </div>
 
         {/* AccuracyProof has its own header — pass directly */}
-        <AccuracyProof accuracy={accuracy} modelMeta={modelMeta} />
+        <AccuracyProof modelMeta={modelMeta} />
       </section>
 
       {/* ── DATA SOURCES ── */}
