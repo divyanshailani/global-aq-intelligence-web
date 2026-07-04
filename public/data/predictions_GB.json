@@ -12,7 +12,7 @@
     "test_mae": 1.5,
     "fire_count": 0
   },
-  "generated_at": "2026-07-04T04:06:47.861280Z",
+  "generated_at": "2026-07-04T17:52:17.347569Z",
   "last_data_date": "2026-06-17",
   "forecast": [
     {
@@ -290,7 +290,7 @@
       "horizon_days": 28,
       "confidence": "low",
       "confidence_pct": 30,
-      "mean_pm25": 6.8,
+      "mean_pm25": 6.81,
       "min_pm25": 3.1,
       "max_pm25": 12.75,
       "stations": 218
@@ -310,7 +310,7 @@
       "horizon_days": 30,
       "confidence": "low",
       "confidence_pct": 30,
-      "mean_pm25": 6.67,
+      "mean_pm25": 6.68,
       "min_pm25": 3.03,
       "max_pm25": 12.04,
       "stations": 218
