@@ -12,7 +12,7 @@
     "test_mae": 2.5,
     "fire_count": 0
   },
-  "generated_at": "2026-07-16T09:54:51.628022Z",
+  "generated_at": "2026-07-17T08:12:05.044472Z",
   "last_data_date": "2026-07-15",
   "forecast": [
     {
@@ -30,7 +30,7 @@
       "horizon_days": 2,
       "confidence": "high",
       "confidence_pct": 92,
-      "mean_pm25": 8.64,
+      "mean_pm25": 8.63,
       "min_pm25": 4.38,
       "max_pm25": 12.77,
       "stations": 1616
@@ -122,7 +122,7 @@
       "confidence_pct": 60,
       "mean_pm25": 8.39,
       "min_pm25": 5.0,
-      "max_pm25": 11.64,
+      "max_pm25": 11.62,
       "stations": 1616
     },
     {
@@ -132,7 +132,7 @@
       "confidence_pct": 58,
       "mean_pm25": 8.46,
       "min_pm25": 4.98,
-      "max_pm25": 11.68,
+      "max_pm25": 11.65,
       "stations": 1616
     },
     {
@@ -300,7 +300,7 @@
       "horizon_days": 29,
       "confidence": "low",
       "confidence_pct": 30,
-      "mean_pm25": 8.9,
+      "mean_pm25": 8.91,
       "min_pm25": 5.35,
       "max_pm25": 12.67,
       "stations": 1616
