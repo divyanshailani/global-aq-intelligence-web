@@ -12,7 +12,7 @@
     "test_mae": 2.5,
     "fire_count": 0
   },
-  "generated_at": "2026-07-17T08:12:05.044472Z",
+  "generated_at": "2026-07-18T10:25:25.906223Z",
   "last_data_date": "2026-07-15",
   "forecast": [
     {
@@ -30,7 +30,7 @@
       "horizon_days": 2,
       "confidence": "high",
       "confidence_pct": 92,
-      "mean_pm25": 8.63,
+      "mean_pm25": 8.64,
       "min_pm25": 4.38,
       "max_pm25": 12.77,
       "stations": 1616
@@ -52,7 +52,7 @@
       "confidence_pct": 86,
       "mean_pm25": 8.41,
       "min_pm25": 4.69,
-      "max_pm25": 11.87,
+      "max_pm25": 11.89,
       "stations": 1616
     },
     {
@@ -70,9 +70,9 @@
       "horizon_days": 6,
       "confidence": "high",
       "confidence_pct": 80,
-      "mean_pm25": 8.18,
+      "mean_pm25": 8.19,
       "min_pm25": 4.87,
-      "max_pm25": 11.25,
+      "max_pm25": 11.27,
       "stations": 1616
     },
     {
@@ -82,7 +82,7 @@
       "confidence_pct": 77,
       "mean_pm25": 8.07,
       "min_pm25": 4.84,
-      "max_pm25": 11.02,
+      "max_pm25": 11.03,
       "stations": 1616
     },
     {
@@ -92,7 +92,7 @@
       "confidence_pct": 68,
       "mean_pm25": 8.15,
       "min_pm25": 4.9,
-      "max_pm25": 11.19,
+      "max_pm25": 11.2,
       "stations": 1616
     },
     {
@@ -102,7 +102,7 @@
       "confidence_pct": 65,
       "mean_pm25": 8.23,
       "min_pm25": 4.96,
-      "max_pm25": 11.32,
+      "max_pm25": 11.35,
       "stations": 1616
     },
     {
@@ -182,7 +182,7 @@
       "confidence_pct": 47,
       "mean_pm25": 8.68,
       "min_pm25": 5.09,
-      "max_pm25": 11.98,
+      "max_pm25": 11.97,
       "stations": 1616
     },
     {
@@ -200,7 +200,7 @@
       "horizon_days": 19,
       "confidence": "low",
       "confidence_pct": 44,
-      "mean_pm25": 8.72,
+      "mean_pm25": 8.71,
       "min_pm25": 5.19,
       "max_pm25": 12.11,
       "stations": 1616
@@ -300,7 +300,7 @@
       "horizon_days": 29,
       "confidence": "low",
       "confidence_pct": 30,
-      "mean_pm25": 8.91,
+      "mean_pm25": 8.9,
       "min_pm25": 5.35,
       "max_pm25": 12.67,
       "stations": 1616
