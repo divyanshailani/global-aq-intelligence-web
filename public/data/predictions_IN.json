@@ -12,7 +12,7 @@
     "test_mae": 27.1,
     "fire_count": 0
   },
-  "generated_at": "2026-07-19T08:43:32.668438Z",
+  "generated_at": "2026-07-20T09:16:31.439242Z",
   "last_data_date": "2026-07-04",
   "forecast": [
     {
@@ -221,7 +221,7 @@
       "confidence": "low",
       "confidence_pct": 41,
       "mean_pm25": 32.12,
-      "min_pm25": 18.73,
+      "min_pm25": 18.74,
       "max_pm25": 50.16,
       "stations": 630
     },
