@@ -6,7 +6,7 @@
 
 **Live:** [global-aq-intelligence.vercel.app](https://global-aq-intelligence.vercel.app)
 
-**Stack:** Next.js 15 · TypeScript · Tailwind CSS · Recharts
+**Stack:** Next.js 16 · TypeScript · Tailwind CSS · Recharts
 
 **Backend pipeline:** [global-aq-intelligence-pipeline](https://github.com/divyanshailani/global-aq-intelligence-pipeline)
 
@@ -17,10 +17,10 @@
 This frontend has zero runtime dependencies on the backend. Data is pre-generated static JSON served from `public/data/`.
 
 ```
-Backend pipeline runs daily
-  └── predict_pipeline.py generates forecasts
-       └── exports to data/site_data/
-            └── auto-syncs to global-aq-intelligence/public/data/
+Backend pipeline runs daily (GitHub Actions)
+  └── collect → ETL → predict_v12_onnx.py generates forecasts
+       └── exports to pipeline site_data/
+            └── publish step commits them to this repo's public/data/
                  └── Vercel deploys on git push
                       └── user sees fresh forecasts
 ```
