@@ -39,10 +39,10 @@ The backend writes 6 JSON files that this app reads:
 | `predictions_US.json` | USA 30-day station forecasts |
 | `predictions_GB.json` | UK 30-day station forecasts |
 | `predictions_AU.json` | Australia 30-day station forecasts |
-| `model_meta.json` | Per-country model metadata, confidence tags, R² |
-| `accuracy.json` | Backtest metrics, training scores, confidence explanations |
+| `model_meta.json` | Per-country model metadata, confidence tags, test MAE |
+| `accuracy.json` | Live validation metrics (MAE, accuracy %, sample count, drift warnings) |
 
-Each `ForecastPoint` includes `mean_pm25`, `min_pm25`, `max_pm25`, `confidence_pct`, `horizon_days`, and `weather_context` (temp, wind, precip).
+Each `ForecastPoint` includes `mean_pm25`, `min_pm25`, `max_pm25`, `confidence_pct`, `horizon_days`, `stations`, and `weather_context` (temp, wind, precip).
 
 ---
 
@@ -105,7 +105,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 The `public/data/` JSONs are already committed so the app renders with real data immediately without needing the backend pipeline running.
 
-**To get fresh forecasts:** run `python3 scripts/predict_pipeline.py` from the backend repo. It auto-syncs the JSONs here.
+**To get fresh forecasts:** run `python3 scripts/pipeline/predict_v12_onnx.py` from the backend repo. It generates forecasts to `site_data/` which the pipeline's GitHub Actions publishes here automatically on schedule.
 
 ---
 
@@ -121,10 +121,12 @@ git push origin main
 
 ---
 
-## Confidence Zones
+## Confidence Zones (V12 ONNX)
 
 | Zone | Days | Source | Reliability |
 |------|------|--------|-------------|
-| High | 1–7 | V7 direct model (h1) + weather interpolation | Direct GBR output |
+| High | 1–7 | V12 direct models (h1, h7) + weather interpolation | Direct ONNX output |
 | Medium | 8–15 | Interpolated between h7 and h14 anchors | Weather-weighted |
 | Low | 16–30 | Interpolated between h14 and h30 anchors | Directional trend only |
+
+V12 uses 4 dedicated ONNX models per country (horizons 1, 7, 14, 30 days). Intermediate days linearly interpolate between anchors.
