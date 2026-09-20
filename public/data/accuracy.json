@@ -1,42 +1,42 @@
 {
-  "generated_at": "2026-09-19T10:11:29.301685",
-  "last_pipeline_run": "2026-09-19T10:11:29.301685",
+  "generated_at": "2026-09-20T10:33:40.034445",
+  "last_pipeline_run": "2026-09-20T10:33:40.034445",
   "mae": 5.52,
-  "accuracy_percentage": 51.27,
+  "accuracy_percentage": 51.13,
   "source": "live",
-  "sample_count": 4172,
-  "live_validation_count": 4172,
+  "sample_count": 4281,
+  "live_validation_count": 4281,
   "live_per_country": {
     "IN": {
-      "mae": 13.49,
-      "accuracy_percentage": 50.36,
-      "sample_count": 1039,
+      "mae": 13.47,
+      "accuracy_percentage": 50.46,
+      "sample_count": 1066,
       "drift": null
     },
     "US": {
-      "mae": 2.33,
-      "accuracy_percentage": 67.91,
-      "sample_count": 1085,
+      "mae": 2.32,
+      "accuracy_percentage": 67.96,
+      "sample_count": 1113,
       "drift": null
     },
     "GB": {
-      "mae": 4.45,
-      "accuracy_percentage": 14.25,
-      "sample_count": 1035,
+      "mae": 4.47,
+      "accuracy_percentage": 12.97,
+      "sample_count": 1062,
       "drift": {
-        "ratio": 2.96,
+        "ratio": 2.98,
         "threshold": 1.5,
         "test_mae": 1.5
       }
     },
     "AU": {
-      "mae": 1.85,
-      "accuracy_percentage": 67.45,
-      "sample_count": 1013,
+      "mae": 1.87,
+      "accuracy_percentage": 66.85,
+      "sample_count": 1040,
       "drift": null
     }
   },
   "drift_warnings": [
-    "GB: live MAE 4.45 > 1.5x test MAE 1.5 (ratio=2.96)"
+    "GB: live MAE 4.47 > 1.5x test MAE 1.5 (ratio=2.98)"
   ]
 }
