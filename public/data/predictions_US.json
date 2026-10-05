@@ -12,7 +12,7 @@
     "test_mae": 2.5,
     "fire_count": 0
   },
-  "generated_at": "2026-10-05T12:52:05.753505Z",
+  "generated_at": "2026-10-05T13:14:17.211383Z",
   "last_data_date": "2026-10-02",
   "forecast": [
     {
@@ -20,9 +20,9 @@
       "horizon_days": 1,
       "confidence": "high",
       "confidence_pct": 95,
-      "mean_pm25": 7.73,
-      "min_pm25": 4.14,
-      "max_pm25": 11.62,
+      "mean_pm25": 8.21,
+      "min_pm25": 4.28,
+      "max_pm25": 12.52,
       "stations": 1617
     },
     {
@@ -30,9 +30,9 @@
       "horizon_days": 2,
       "confidence": "high",
       "confidence_pct": 92,
-      "mean_pm25": 7.7,
-      "min_pm25": 4.25,
-      "max_pm25": 11.2,
+      "mean_pm25": 8.17,
+      "min_pm25": 4.41,
+      "max_pm25": 12.28,
       "stations": 1617
     },
     {
@@ -40,9 +40,9 @@
       "horizon_days": 3,
       "confidence": "high",
       "confidence_pct": 89,
-      "mean_pm25": 7.67,
-      "min_pm25": 4.39,
-      "max_pm25": 10.88,
+      "mean_pm25": 8.13,
+      "min_pm25": 4.5,
+      "max_pm25": 11.82,
       "stations": 1617
     },
     {
@@ -50,9 +50,9 @@
       "horizon_days": 4,
       "confidence": "high",
       "confidence_pct": 86,
-      "mean_pm25": 7.64,
-      "min_pm25": 4.5,
-      "max_pm25": 10.68,
+      "mean_pm25": 8.09,
+      "min_pm25": 4.59,
+      "max_pm25": 11.6,
       "stations": 1617
     },
     {
@@ -60,9 +60,9 @@
       "horizon_days": 5,
       "confidence": "high",
       "confidence_pct": 83,
-      "mean_pm25": 7.61,
-      "min_pm25": 4.5,
-      "max_pm25": 10.47,
+      "mean_pm25": 8.05,
+      "min_pm25": 4.63,
+      "max_pm25": 11.44,
       "stations": 1617
     },
     {
@@ -70,9 +70,9 @@
       "horizon_days": 6,
       "confidence": "high",
       "confidence_pct": 80,
-      "mean_pm25": 7.58,
-      "min_pm25": 4.54,
-      "max_pm25": 10.48,
+      "mean_pm25": 8.01,
+      "min_pm25": 4.64,
+      "max_pm25": 11.27,
       "stations": 1617
     },
     {
@@ -80,9 +80,9 @@
       "horizon_days": 7,
       "confidence": "high",
       "confidence_pct": 77,
-      "mean_pm25": 7.55,
-      "min_pm25": 4.54,
-      "max_pm25": 10.51,
+      "mean_pm25": 7.97,
+      "min_pm25": 4.63,
+      "max_pm25": 11.17,
       "stations": 1617
     },
     {
@@ -90,9 +90,9 @@
       "horizon_days": 8,
       "confidence": "medium",
       "confidence_pct": 68,
-      "mean_pm25": 7.53,
-      "min_pm25": 4.55,
-      "max_pm25": 10.41,
+      "mean_pm25": 7.93,
+      "min_pm25": 4.73,
+      "max_pm25": 11.14,
       "stations": 1617
     },
     {
@@ -100,9 +100,9 @@
       "horizon_days": 9,
       "confidence": "medium",
       "confidence_pct": 65,
-      "mean_pm25": 7.51,
-      "min_pm25": 4.59,
-      "max_pm25": 10.39,
+      "mean_pm25": 7.89,
+      "min_pm25": 4.71,
+      "max_pm25": 11.04,
       "stations": 1617
     },
     {
@@ -110,9 +110,9 @@
       "horizon_days": 10,
       "confidence": "medium",
       "confidence_pct": 62,
-      "mean_pm25": 7.49,
-      "min_pm25": 4.59,
-      "max_pm25": 10.37,
+      "mean_pm25": 7.84,
+      "min_pm25": 4.68,
+      "max_pm25": 10.97,
       "stations": 1617
     },
     {
@@ -120,9 +120,9 @@
       "horizon_days": 11,
       "confidence": "medium",
       "confidence_pct": 60,
-      "mean_pm25": 7.47,
-      "min_pm25": 4.57,
-      "max_pm25": 10.29,
+      "mean_pm25": 7.8,
+      "min_pm25": 4.68,
+      "max_pm25": 10.87,
       "stations": 1617
     },
     {
@@ -130,9 +130,9 @@
       "horizon_days": 12,
       "confidence": "medium",
       "confidence_pct": 58,
-      "mean_pm25": 7.45,
-      "min_pm25": 4.53,
-      "max_pm25": 10.23,
+      "mean_pm25": 7.76,
+      "min_pm25": 4.65,
+      "max_pm25": 10.75,
       "stations": 1617
     },
     {
@@ -140,9 +140,9 @@
       "horizon_days": 13,
       "confidence": "medium",
       "confidence_pct": 55,
-      "mean_pm25": 7.42,
-      "min_pm25": 4.49,
-      "max_pm25": 10.28,
+      "mean_pm25": 7.72,
+      "min_pm25": 4.65,
+      "max_pm25": 10.72,
       "stations": 1617
     },
     {
@@ -150,9 +150,9 @@
       "horizon_days": 14,
       "confidence": "medium",
       "confidence_pct": 52,
-      "mean_pm25": 7.4,
-      "min_pm25": 4.46,
-      "max_pm25": 10.26,
+      "mean_pm25": 7.68,
+      "min_pm25": 4.59,
+      "max_pm25": 10.67,
       "stations": 1617
     },
     {
@@ -160,9 +160,9 @@
       "horizon_days": 15,
       "confidence": "medium",
       "confidence_pct": 50,
-      "mean_pm25": 7.44,
-      "min_pm25": 4.49,
-      "max_pm25": 10.36,
+      "mean_pm25": 7.71,
+      "min_pm25": 4.64,
+      "max_pm25": 10.68,
       "stations": 1617
     },
     {
@@ -170,9 +170,9 @@
       "horizon_days": 16,
       "confidence": "low",
       "confidence_pct": 48,
-      "mean_pm25": 7.47,
-      "min_pm25": 4.53,
-      "max_pm25": 10.42,
+      "mean_pm25": 7.74,
+      "min_pm25": 4.66,
+      "max_pm25": 10.8,
       "stations": 1617
     },
     {
@@ -180,9 +180,9 @@
       "horizon_days": 17,
       "confidence": "low",
       "confidence_pct": 47,
-      "mean_pm25": 7.51,
-      "min_pm25": 4.55,
-      "max_pm25": 10.47,
+      "mean_pm25": 7.77,
+      "min_pm25": 4.69,
+      "max_pm25": 10.88,
       "stations": 1617
     },
     {
@@ -190,9 +190,9 @@
       "horizon_days": 18,
       "confidence": "low",
       "confidence_pct": 46,
-      "mean_pm25": 7.54,
-      "min_pm25": 4.58,
-      "max_pm25": 10.49,
+      "mean_pm25": 7.8,
+      "min_pm25": 4.71,
+      "max_pm25": 10.95,
       "stations": 1617
     },
     {
@@ -200,9 +200,9 @@
       "horizon_days": 19,
       "confidence": "low",
       "confidence_pct": 44,
-      "mean_pm25": 7.58,
-      "min_pm25": 4.6,
-      "max_pm25": 10.6,
+      "mean_pm25": 7.83,
+      "min_pm25": 4.75,
+      "max_pm25": 11.03,
       "stations": 1617
     },
     {
@@ -210,9 +210,9 @@
       "horizon_days": 20,
       "confidence": "low",
       "confidence_pct": 42,
-      "mean_pm25": 7.61,
-      "min_pm25": 4.63,
-      "max_pm25": 10.72,
+      "mean_pm25": 7.87,
+      "min_pm25": 4.79,
+      "max_pm25": 11.1,
       "stations": 1617
     },
     {
@@ -220,9 +220,9 @@
       "horizon_days": 21,
       "confidence": "low",
       "confidence_pct": 41,
-      "mean_pm25": 7.64,
-      "min_pm25": 4.68,
-      "max_pm25": 10.92,
+      "mean_pm25": 7.9,
+      "min_pm25": 4.83,
+      "max_pm25": 11.12,
       "stations": 1617
     },
     {
@@ -230,9 +230,9 @@
       "horizon_days": 22,
       "confidence": "low",
       "confidence_pct": 40,
-      "mean_pm25": 7.68,
-      "min_pm25": 4.73,
-      "max_pm25": 11.01,
+      "mean_pm25": 7.93,
+      "min_pm25": 4.88,
+      "max_pm25": 11.26,
       "stations": 1617
     },
     {
@@ -240,9 +240,9 @@
       "horizon_days": 23,
       "confidence": "low",
       "confidence_pct": 38,
-      "mean_pm25": 7.71,
-      "min_pm25": 4.78,
-      "max_pm25": 11.09,
+      "mean_pm25": 7.96,
+      "min_pm25": 4.92,
+      "max_pm25": 11.39,
       "stations": 1617
     },
     {
@@ -250,9 +250,9 @@
       "horizon_days": 24,
       "confidence": "low",
       "confidence_pct": 36,
-      "mean_pm25": 7.75,
-      "min_pm25": 4.82,
-      "max_pm25": 11.15,
+      "mean_pm25": 7.99,
+      "min_pm25": 4.96,
+      "max_pm25": 11.49,
       "stations": 1617
     },
     {
@@ -260,9 +260,9 @@
       "horizon_days": 25,
       "confidence": "low",
       "confidence_pct": 35,
-      "mean_pm25": 7.78,
-      "min_pm25": 4.88,
-      "max_pm25": 11.24,
+      "mean_pm25": 8.03,
+      "min_pm25": 5.0,
+      "max_pm25": 11.57,
       "stations": 1617
     },
     {
@@ -270,9 +270,9 @@
       "horizon_days": 26,
       "confidence": "low",
       "confidence_pct": 34,
-      "mean_pm25": 7.82,
-      "min_pm25": 4.92,
-      "max_pm25": 11.33,
+      "mean_pm25": 8.06,
+      "min_pm25": 5.02,
+      "max_pm25": 11.6,
       "stations": 1617
     },
     {
@@ -280,9 +280,9 @@
       "horizon_days": 27,
       "confidence": "low",
       "confidence_pct": 32,
-      "mean_pm25": 7.85,
-      "min_pm25": 4.91,
-      "max_pm25": 11.39,
+      "mean_pm25": 8.09,
+      "min_pm25": 5.03,
+      "max_pm25": 11.71,
       "stations": 1617
     },
     {
@@ -290,9 +290,9 @@
       "horizon_days": 28,
       "confidence": "low",
       "confidence_pct": 30,
-      "mean_pm25": 7.89,
-      "min_pm25": 4.89,
-      "max_pm25": 11.41,
+      "mean_pm25": 8.12,
+      "min_pm25": 5.08,
+      "max_pm25": 11.76,
       "stations": 1617
     },
     {
@@ -300,9 +300,9 @@
       "horizon_days": 29,
       "confidence": "low",
       "confidence_pct": 30,
-      "mean_pm25": 7.92,
-      "min_pm25": 4.93,
-      "max_pm25": 11.45,
+      "mean_pm25": 8.15,
+      "min_pm25": 5.11,
+      "max_pm25": 11.85,
       "stations": 1617
     },
     {
@@ -310,9 +310,9 @@
       "horizon_days": 30,
       "confidence": "low",
       "confidence_pct": 30,
-      "mean_pm25": 7.95,
-      "min_pm25": 4.95,
-      "max_pm25": 11.59,
+      "mean_pm25": 8.18,
+      "min_pm25": 5.12,
+      "max_pm25": 11.93,
       "stations": 1617
     }
   ],
