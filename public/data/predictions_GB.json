@@ -12,309 +12,309 @@
     "test_mae": 1.5,
     "fire_count": 0
   },
-  "generated_at": "2026-10-14T22:22:31.382552Z",
-  "last_data_date": "2026-10-10",
+  "generated_at": "2026-10-15T07:52:03.540859Z",
+  "last_data_date": "2026-10-11",
   "forecast": [
     {
-      "target_date": "2026-10-11",
+      "target_date": "2026-10-12",
       "horizon_days": 1,
       "confidence": "high",
       "confidence_pct": 95,
-      "mean_pm25": 6.37,
-      "min_pm25": 1.82,
-      "max_pm25": 11.38,
-      "stations": 443
-    },
-    {
-      "target_date": "2026-10-12",
-      "horizon_days": 2,
-      "confidence": "high",
-      "confidence_pct": 92,
-      "mean_pm25": 7.02,
-      "min_pm25": 2.4,
-      "max_pm25": 11.82,
-      "stations": 443
+      "mean_pm25": 7.49,
+      "min_pm25": 3.95,
+      "max_pm25": 10.44,
+      "stations": 154
     },
     {
       "target_date": "2026-10-13",
-      "horizon_days": 3,
+      "horizon_days": 2,
       "confidence": "high",
-      "confidence_pct": 89,
-      "mean_pm25": 7.68,
-      "min_pm25": 2.96,
-      "max_pm25": 12.69,
-      "stations": 443
+      "confidence_pct": 92,
+      "mean_pm25": 8.43,
+      "min_pm25": 5.11,
+      "max_pm25": 11.14,
+      "stations": 154
     },
     {
       "target_date": "2026-10-14",
-      "horizon_days": 4,
+      "horizon_days": 3,
       "confidence": "high",
-      "confidence_pct": 86,
-      "mean_pm25": 8.34,
-      "min_pm25": 3.41,
-      "max_pm25": 13.77,
-      "stations": 443
+      "confidence_pct": 89,
+      "mean_pm25": 9.38,
+      "min_pm25": 5.99,
+      "max_pm25": 12.27,
+      "stations": 154
     },
     {
       "target_date": "2026-10-15",
-      "horizon_days": 5,
+      "horizon_days": 4,
       "confidence": "high",
-      "confidence_pct": 83,
-      "mean_pm25": 9.0,
-      "min_pm25": 3.75,
-      "max_pm25": 14.29,
-      "stations": 443
+      "confidence_pct": 86,
+      "mean_pm25": 10.32,
+      "min_pm25": 6.73,
+      "max_pm25": 13.97,
+      "stations": 154
     },
     {
       "target_date": "2026-10-16",
-      "horizon_days": 6,
+      "horizon_days": 5,
       "confidence": "high",
-      "confidence_pct": 80,
-      "mean_pm25": 9.66,
-      "min_pm25": 4.03,
-      "max_pm25": 15.92,
-      "stations": 443
+      "confidence_pct": 83,
+      "mean_pm25": 11.27,
+      "min_pm25": 7.34,
+      "max_pm25": 15.14,
+      "stations": 154
     },
     {
       "target_date": "2026-10-17",
-      "horizon_days": 7,
+      "horizon_days": 6,
       "confidence": "high",
-      "confidence_pct": 77,
-      "mean_pm25": 10.31,
-      "min_pm25": 4.19,
-      "max_pm25": 17.51,
-      "stations": 443
+      "confidence_pct": 80,
+      "mean_pm25": 12.21,
+      "min_pm25": 7.92,
+      "max_pm25": 17.23,
+      "stations": 154
     },
     {
       "target_date": "2026-10-18",
-      "horizon_days": 8,
-      "confidence": "medium",
-      "confidence_pct": 68,
-      "mean_pm25": 9.85,
-      "min_pm25": 4.22,
-      "max_pm25": 16.37,
-      "stations": 443
+      "horizon_days": 7,
+      "confidence": "high",
+      "confidence_pct": 77,
+      "mean_pm25": 13.16,
+      "min_pm25": 8.21,
+      "max_pm25": 19.32,
+      "stations": 154
     },
     {
       "target_date": "2026-10-19",
-      "horizon_days": 9,
+      "horizon_days": 8,
       "confidence": "medium",
-      "confidence_pct": 65,
-      "mean_pm25": 9.4,
-      "min_pm25": 4.25,
-      "max_pm25": 15.51,
-      "stations": 443
+      "confidence_pct": 68,
+      "mean_pm25": 11.76,
+      "min_pm25": 7.3,
+      "max_pm25": 16.18,
+      "stations": 154
     },
     {
       "target_date": "2026-10-20",
+      "horizon_days": 9,
+      "confidence": "medium",
+      "confidence_pct": 65,
+      "mean_pm25": 10.35,
+      "min_pm25": 6.25,
+      "max_pm25": 14.35,
+      "stations": 154
+    },
+    {
+      "target_date": "2026-10-21",
       "horizon_days": 10,
       "confidence": "medium",
       "confidence_pct": 62,
       "mean_pm25": 8.95,
-      "min_pm25": 4.14,
-      "max_pm25": 14.29,
-      "stations": 443
-    },
-    {
-      "target_date": "2026-10-21",
-      "horizon_days": 11,
-      "confidence": "medium",
-      "confidence_pct": 60,
-      "mean_pm25": 8.49,
-      "min_pm25": 4.03,
-      "max_pm25": 13.58,
-      "stations": 443
+      "min_pm25": 4.94,
+      "max_pm25": 12.26,
+      "stations": 154
     },
     {
       "target_date": "2026-10-22",
-      "horizon_days": 12,
+      "horizon_days": 11,
       "confidence": "medium",
-      "confidence_pct": 58,
-      "mean_pm25": 8.05,
-      "min_pm25": 3.73,
-      "max_pm25": 13.24,
-      "stations": 443
+      "confidence_pct": 60,
+      "mean_pm25": 7.56,
+      "min_pm25": 3.6,
+      "max_pm25": 11.4,
+      "stations": 154
     },
     {
       "target_date": "2026-10-23",
-      "horizon_days": 13,
+      "horizon_days": 12,
       "confidence": "medium",
-      "confidence_pct": 55,
-      "mean_pm25": 7.61,
-      "min_pm25": 3.19,
-      "max_pm25": 12.86,
-      "stations": 443
+      "confidence_pct": 58,
+      "mean_pm25": 6.25,
+      "min_pm25": 2.6,
+      "max_pm25": 10.02,
+      "stations": 154
     },
     {
       "target_date": "2026-10-24",
-      "horizon_days": 14,
+      "horizon_days": 13,
       "confidence": "medium",
-      "confidence_pct": 52,
-      "mean_pm25": 7.19,
-      "min_pm25": 2.28,
-      "max_pm25": 12.68,
-      "stations": 443
+      "confidence_pct": 55,
+      "mean_pm25": 4.99,
+      "min_pm25": 0.7,
+      "max_pm25": 8.93,
+      "stations": 154
     },
     {
       "target_date": "2026-10-25",
-      "horizon_days": 15,
+      "horizon_days": 14,
       "confidence": "medium",
-      "confidence_pct": 50,
-      "mean_pm25": 7.16,
-      "min_pm25": 2.34,
-      "max_pm25": 12.62,
-      "stations": 443
+      "confidence_pct": 52,
+      "mean_pm25": 3.86,
+      "min_pm25": 0.0,
+      "max_pm25": 8.2,
+      "stations": 154
     },
     {
       "target_date": "2026-10-26",
-      "horizon_days": 16,
-      "confidence": "low",
-      "confidence_pct": 48,
-      "mean_pm25": 7.14,
-      "min_pm25": 2.68,
-      "max_pm25": 12.49,
-      "stations": 443
+      "horizon_days": 15,
+      "confidence": "medium",
+      "confidence_pct": 50,
+      "mean_pm25": 4.01,
+      "min_pm25": 0.0,
+      "max_pm25": 8.17,
+      "stations": 154
     },
     {
       "target_date": "2026-10-27",
-      "horizon_days": 17,
+      "horizon_days": 16,
       "confidence": "low",
-      "confidence_pct": 47,
-      "mean_pm25": 7.12,
-      "min_pm25": 2.91,
-      "max_pm25": 12.31,
-      "stations": 443
+      "confidence_pct": 48,
+      "mean_pm25": 4.17,
+      "min_pm25": 0.0,
+      "max_pm25": 8.16,
+      "stations": 154
     },
     {
       "target_date": "2026-10-28",
-      "horizon_days": 18,
+      "horizon_days": 17,
       "confidence": "low",
-      "confidence_pct": 46,
-      "mean_pm25": 7.1,
-      "min_pm25": 2.91,
-      "max_pm25": 12.27,
-      "stations": 443
+      "confidence_pct": 47,
+      "mean_pm25": 4.34,
+      "min_pm25": 0.07,
+      "max_pm25": 8.15,
+      "stations": 154
     },
     {
       "target_date": "2026-10-29",
-      "horizon_days": 19,
+      "horizon_days": 18,
       "confidence": "low",
-      "confidence_pct": 44,
-      "mean_pm25": 7.08,
-      "min_pm25": 3.03,
-      "max_pm25": 12.35,
-      "stations": 443
+      "confidence_pct": 46,
+      "mean_pm25": 4.53,
+      "min_pm25": 0.55,
+      "max_pm25": 8.04,
+      "stations": 154
     },
     {
       "target_date": "2026-10-30",
-      "horizon_days": 20,
+      "horizon_days": 19,
       "confidence": "low",
-      "confidence_pct": 42,
-      "mean_pm25": 7.06,
-      "min_pm25": 2.99,
-      "max_pm25": 12.51,
-      "stations": 443
+      "confidence_pct": 44,
+      "mean_pm25": 4.72,
+      "min_pm25": 1.06,
+      "max_pm25": 8.21,
+      "stations": 154
     },
     {
       "target_date": "2026-10-31",
-      "horizon_days": 21,
+      "horizon_days": 20,
       "confidence": "low",
-      "confidence_pct": 41,
-      "mean_pm25": 7.04,
-      "min_pm25": 2.95,
-      "max_pm25": 12.58,
-      "stations": 443
+      "confidence_pct": 42,
+      "mean_pm25": 4.91,
+      "min_pm25": 1.39,
+      "max_pm25": 8.47,
+      "stations": 154
     },
     {
       "target_date": "2026-11-01",
-      "horizon_days": 22,
+      "horizon_days": 21,
       "confidence": "low",
-      "confidence_pct": 40,
-      "mean_pm25": 7.03,
-      "min_pm25": 3.03,
-      "max_pm25": 12.58,
-      "stations": 443
+      "confidence_pct": 41,
+      "mean_pm25": 5.12,
+      "min_pm25": 1.66,
+      "max_pm25": 8.85,
+      "stations": 154
     },
     {
       "target_date": "2026-11-02",
-      "horizon_days": 23,
+      "horizon_days": 22,
       "confidence": "low",
-      "confidence_pct": 38,
-      "mean_pm25": 7.02,
-      "min_pm25": 2.98,
-      "max_pm25": 12.49,
-      "stations": 443
+      "confidence_pct": 40,
+      "mean_pm25": 5.34,
+      "min_pm25": 2.1,
+      "max_pm25": 9.34,
+      "stations": 154
     },
     {
       "target_date": "2026-11-03",
-      "horizon_days": 24,
+      "horizon_days": 23,
       "confidence": "low",
-      "confidence_pct": 36,
-      "mean_pm25": 7.01,
-      "min_pm25": 3.08,
-      "max_pm25": 12.52,
-      "stations": 443
+      "confidence_pct": 38,
+      "mean_pm25": 5.56,
+      "min_pm25": 2.35,
+      "max_pm25": 9.77,
+      "stations": 154
     },
     {
       "target_date": "2026-11-04",
-      "horizon_days": 25,
+      "horizon_days": 24,
       "confidence": "low",
-      "confidence_pct": 35,
-      "mean_pm25": 7.01,
-      "min_pm25": 3.18,
-      "max_pm25": 12.71,
-      "stations": 443
+      "confidence_pct": 36,
+      "mean_pm25": 5.79,
+      "min_pm25": 2.57,
+      "max_pm25": 9.99,
+      "stations": 154
     },
     {
       "target_date": "2026-11-05",
-      "horizon_days": 26,
+      "horizon_days": 25,
       "confidence": "low",
-      "confidence_pct": 34,
-      "mean_pm25": 7.0,
-      "min_pm25": 3.12,
-      "max_pm25": 12.59,
-      "stations": 443
+      "confidence_pct": 35,
+      "mean_pm25": 6.03,
+      "min_pm25": 2.93,
+      "max_pm25": 10.45,
+      "stations": 154
     },
     {
       "target_date": "2026-11-06",
-      "horizon_days": 27,
+      "horizon_days": 26,
       "confidence": "low",
-      "confidence_pct": 32,
-      "mean_pm25": 7.0,
-      "min_pm25": 3.05,
-      "max_pm25": 12.69,
-      "stations": 443
+      "confidence_pct": 34,
+      "mean_pm25": 6.27,
+      "min_pm25": 3.08,
+      "max_pm25": 10.83,
+      "stations": 154
     },
     {
       "target_date": "2026-11-07",
-      "horizon_days": 28,
+      "horizon_days": 27,
       "confidence": "low",
-      "confidence_pct": 30,
-      "mean_pm25": 6.99,
-      "min_pm25": 3.02,
-      "max_pm25": 12.76,
-      "stations": 443
+      "confidence_pct": 32,
+      "mean_pm25": 6.52,
+      "min_pm25": 3.2,
+      "max_pm25": 10.97,
+      "stations": 154
     },
     {
       "target_date": "2026-11-08",
-      "horizon_days": 29,
+      "horizon_days": 28,
       "confidence": "low",
       "confidence_pct": 30,
-      "mean_pm25": 6.99,
-      "min_pm25": 2.98,
-      "max_pm25": 12.77,
-      "stations": 443
+      "mean_pm25": 6.76,
+      "min_pm25": 3.2,
+      "max_pm25": 11.16,
+      "stations": 154
     },
     {
       "target_date": "2026-11-09",
+      "horizon_days": 29,
+      "confidence": "low",
+      "confidence_pct": 30,
+      "mean_pm25": 7.0,
+      "min_pm25": 3.23,
+      "max_pm25": 11.69,
+      "stations": 154
+    },
+    {
+      "target_date": "2026-11-10",
       "horizon_days": 30,
       "confidence": "low",
       "confidence_pct": 30,
-      "mean_pm25": 6.99,
-      "min_pm25": 2.9,
-      "max_pm25": 12.85,
-      "stations": 443
+      "mean_pm25": 7.24,
+      "min_pm25": 3.23,
+      "max_pm25": 12.34,
+      "stations": 154
     }
   ],
-  "station_count": 443
+  "station_count": 154
 }
