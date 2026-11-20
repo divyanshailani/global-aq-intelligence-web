@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-20T14:23:32.037637",
-  "last_pipeline_run": "2026-11-20T14:23:32.037637",
+  "generated_at": "2026-11-20T14:41:49.780885",
+  "last_pipeline_run": "2026-11-20T14:41:49.780885",
   "mae": 5.6,
   "accuracy_percentage": 65.72,
   "source": "live",
